@@ -25,7 +25,7 @@ Run for simple USDT analysis given from the starting key address
 
 ```
     scan_on_address = "...."
-    USDTApp().CheckListTrcUSDT(scan_on_address)
+    USDTApp().CollectionTransactionFromTronForUSDT(scan_on_address)
     Analysis().start(scan_on_address)
 ```
 
