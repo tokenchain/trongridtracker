@@ -8,3 +8,5 @@ rehold_*
 report_*
 analysis_*
 test*
+/analysis
+/reports

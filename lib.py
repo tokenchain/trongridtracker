@@ -19,8 +19,8 @@ from urllib3.exceptions import ReadTimeoutError
 NETWORK = "mainnet"
 ROOT = os.path.join(os.path.dirname(__file__))
 statement = 'End : {}, IO File {}'
-file_format = 'report_{}.txt'
-file_analysis = 'analysis_{}.json'
+file_format = 'reports/report_{}.txt'
+file_analysis = 'analysis/analysis_{}.json'
 file_hold_format = 'rehold_{}.txt'
 filelog_format = 'log_{}.txt'
 statement_process = 'Processed page: {} {}, {}'
@@ -92,6 +92,7 @@ class TronscanAPI:
         self.incount = 0
         self.records = 0
         self.outputfile = "report.txt"
+        self.basefolder = ""
         self.next_link = ""
         self.fingerprint = ""
         self.logfile = ""
@@ -106,6 +107,16 @@ class TronscanAPI:
         fo.write(content)
         fo.close()
         print(statement.format(time.ctime(), filename))
+
+    def folderset(self, k: str) -> "TronscanAPI":
+        self.basefolder = k
+        return self
+
+    def file(self, name: str) -> str:
+        if self.basefolder != "":
+            return os.path.join(self.basefolder, name)
+        else:
+            return name
 
     @staticmethod
     def getTRC20Link(link: str):
@@ -244,8 +255,9 @@ class TronscanAPI:
         if "data" in json:
             response = TronscanAPI.byNext(json["data"])
 
-    def Calc(self, json):
-        if "data" in json:
+    def Calc(self, json) -> bool:
+
+        if isinstance(json, dict) and "data" in json:
 
             for row in json["data"]:
                 if row["from"] == self.wallet_address:
@@ -258,6 +270,7 @@ class TronscanAPI:
 
                 self.records = self.records + 1
                 self.recordTransactionLine(row)
+            return True
 
         return False
 
@@ -299,8 +312,9 @@ class TronscanAPI:
 
     def looper(self, address: str, contract: str):
         if self.skip_dup is True and os.path.isfile(self.outputfile):
-            print(f"Found existing file {self.outputfile} and now skip the process")
-            return
+            if os.path.getsize(self.outputfile) > 10:
+                print(f"Found existing file {self.outputfile} and now skip the process")
+                return
 
         TronscanAPI.writeFile("", self.outputfile)
         json = self.getTRC20(address, contract, 100)
@@ -313,9 +327,11 @@ class TronscanAPI:
         p = 0
         while True:
             with GracefulInterruptHandler() as hp:
-                self.Calc(json)
                 try:
-                    result = self.getNextLoop(json)
+                    if self.Calc(json) is False:
+                        result = False
+                    else:
+                        result = self.getNextLoop(json)
 
                 except TypeError as te:
                     print("☯︎ ", te)
