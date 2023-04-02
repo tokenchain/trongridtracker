@@ -98,6 +98,7 @@ class TronscanAPI:
         self._m_address = ""
         self._m_balance = 0
         self.wallet_address = ""
+        self.skip_dup = False
 
     @staticmethod
     def writeFile(content, filename):
@@ -292,7 +293,15 @@ class TronscanAPI:
     def byValue(self, amount: str) -> float:
         return int(amount) / 1000000
 
+    def skipDupFile(self) -> "TronscanAPI":
+        self.skip_dup = True
+        return self
+
     def looper(self, address: str, contract: str):
+        if self.skip_dup is True and os.path.isfile(self.outputfile):
+            print(f"Found existing file {self.outputfile} and now skip the process")
+            return
+
         TronscanAPI.writeFile("", self.outputfile)
         json = self.getTRC20(address, contract, 100)
         if json == 2:
@@ -371,91 +380,26 @@ class USDTApp(TronscanAPI):
     def __init__(self):
         super().__init__()
 
-    def _resetZero(self):
-        self.outgoing = 0
-        self.outcount = 0
-        self.incoming = 0
-        self.incount = 0
-        self.records = 0
-
     def CollectionTransactionFromTronForUSDD(self, holder_address: str) -> None:
-        self.wallet_address = holder_address
-        self._resetZero()
-        self.outputfile = file_format.format(holder_address)
-        self.logfile = filelog_format.format(holder_address)
-        self.looper(holder_address, "TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn")
+        self.forCoin(holder_address, "TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn")
 
     def CollectionTransactionFromTronForBUSD(self, holder_address: str) -> None:
-        self.wallet_address = holder_address
-        self._resetZero()
-        self.outputfile = file_format.format(holder_address)
-        self.logfile = filelog_format.format(holder_address)
-        self.looper(holder_address, "TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH")
+        self.forCoin(holder_address, "TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH")
 
     def CollectionTransactionFromTronForTUSD(self, holder_address: str) -> None:
-        self.wallet_address = holder_address
-        self._resetZero()
-        self.outputfile = file_format.format(holder_address)
-        self.logfile = filelog_format.format(holder_address)
-        self.looper(holder_address, "TUpMhErZL2fhh4sVNULAbNKLokS4GjC1F4")
+        self.forCoin(holder_address, "TUpMhErZL2fhh4sVNULAbNKLokS4GjC1F4")
 
     def CollectionTransactionFromTronForUSDC(self, holder_address: str) -> None:
-        self.wallet_address = holder_address
-        self._resetZero()
-        self.outputfile = file_format.format(holder_address)
-        self.logfile = filelog_format.format(holder_address)
-        self.looper(holder_address, "TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8")
+        self.forCoin(holder_address, "TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8")
 
     def CollectionTransactionFromTronForUSDT(self, holder_address: str) -> None:
-        self.wallet_address = holder_address
-        self._resetZero()
-        self.outputfile = file_format.format(holder_address)
-        self.logfile = filelog_format.format(holder_address)
-        self.looper(holder_address, "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t")
+        self.forCoin(holder_address, "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t")
 
-
-class CustomToken(TronscanAPI):
-
-    def handlemeHolder(self, data: dict):
-        if "data" in data:
-            for row in data["data"]:
-                self._m_address = row["address"]
-                self._m_balance = row["balance"]
-                self.addressRecordLog()
-
-    def looperHolderAddress(self, contract: str, deci: int):
-        start = 0
-        limit = 50
-
-        result = dict()
-        while True:
-            with GracefulInterruptHandler() as hp:
-                result = self.getHoldersAt(contract, start, limit)
-                if result == 2:
-                    print("retry in 20 seconds")
-                    time.sleep(20)
-                    self.looperHolderAddress(contract, deci)
-
-                if not result:
-                    print("finished..")
-                    self.EndLine()
-                    break
-
-                if isinstance(result, dict):
-                    self.handlemeHolder(result)
-                    self.records = self.records + 1
-
-                start = start + limit
-                if hp.interrupted:
-                    raise TypeError("Program exit")
-
-    def CheckTokenHolderAddress(self, token_address, decimal):
-        self.wallet_address = ""
-        contract = token_address
-        self.records = 0
-        self.outputfile = file_hold_format.format(token_address)
-        self.logfile = filelog_format.format(token_address)
-        self.looperHolderAddress(contract, decimal)
+    def forCoin(self, holder: str, coin: str) -> None:
+        self.wallet_address = holder
+        self.outputfile = file_format.format(holder)
+        self.logfile = filelog_format.format(holder)
+        self.looper(holder, coin)
 
 
 class Analysis:
@@ -561,7 +505,6 @@ class Analysis:
 
 import signal
 import threading
-import pysigset
 
 
 class SubLayerAnalysis:
@@ -627,5 +570,6 @@ class SubLayerAnalysis:
         print(f"Signal {signum} received.")
 
     def newUsdtRun(self, address_t: str):
-        USDTApp().CollectionTransactionFromTronForUSDT(address_t)
+        USDTApp().skipDupFile().CollectionTransactionFromTronForUSDT(address_t)
         Analysis().start(address_t)
+        SubLayerAnalysis().start(address_t)
