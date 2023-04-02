@@ -32,3 +32,8 @@ Run for simple USDT analysis given from the starting key address
 This will generate two files
 1. report database for all the transactions
 2. analysis for incoming and outgoing transactions for each address
+
+
+```
+TronscanAPI.writeFile(response.text, filename)
+```

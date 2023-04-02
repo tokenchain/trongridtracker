@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
-from lib import USDTApp, CustomToken, Analysis
-
-scan_on_address = "...."
+from lib import USDTApp, SubLayerAnalysis, Analysis
 
 
-def line_one_line():
-    USDTApp().CollectionTransactionFromTronForUSDT(scan_on_address)
-    Analysis().start(scan_on_address)
+def line_one_line(t: str):
+    USDTApp().CollectionTransactionFromTronForUSDT(t)
+    Analysis().start(t)
+    SubLayerAnalysis().start(t)
 
 
-def only_read():
-    Analysis().start(scan_on_address)
+def only_read(f: str):
+    Analysis().start(f)
 
 
 if __name__ == '__main__':
-    only_read()
+    scan_on_address = input("please enter the tron wallet address: ")
+    line_one_line(scan_on_address)

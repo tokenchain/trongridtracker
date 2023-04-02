@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import asyncio
 import csv
 import json
 import os
@@ -13,6 +14,8 @@ import requests
 # import sys
 # the mock-0.3.1 dir contains testcase.py, testutils.py & mock.py
 # sys.path.append('/Users/hesdx/Documents/piplines/tron-tool-py/tronpytool')
+from urllib3.exceptions import ReadTimeoutError
+
 NETWORK = "mainnet"
 ROOT = os.path.join(os.path.dirname(__file__))
 statement = 'End : {}, IO File {}'
@@ -20,7 +23,7 @@ file_format = 'report_{}.txt'
 file_analysis = 'analysis_{}.json'
 file_hold_format = 'rehold_{}.txt'
 filelog_format = 'log_{}.txt'
-statement_process = 'Processed {}, {}'
+statement_process = 'Processed page: {} {}, {}'
 statement_log = 'Log {}, FP: {}\n'
 statement_sum = '\nReport for address {}\nTotal outgoing USDT: {} / count: {}\nTotal incoming USDT: {} / count: {}\nNet {}'
 request_1_token = "https://api.trongrid.io/v1/accounts/{}/transactions/trc20?limit={}&contract_address={}"
@@ -49,7 +52,10 @@ class GracefulInterruptHandler(object):
             self.release()
             self.interrupted = True
 
-        signal.signal(self.sig, handler)
+        try:
+            signal.signal(self.sig, handler)
+        except ValueError:
+            pass
 
         return self
 
@@ -59,11 +65,12 @@ class GracefulInterruptHandler(object):
     def release(self):
         if self.released:
             return False
-
-        signal.signal(self.sig, self.original_handler)
+        try:
+            signal.signal(self.sig, self.original_handler)
+        except ValueError:
+            pass
 
         self.released = True
-
         return True
 
 
@@ -200,12 +207,16 @@ class TronscanAPI:
                 self.checkTransaction(hash)
 
     def getNextLoop(self, json: dict) -> Union[bool, dict]:
+        self.next_link = None
         if "meta" in json:
             if "fingerprint" in json["meta"]:
                 self.fingerprint = json["meta"]["fingerprint"]
             if "links" in json["meta"]:
                 if "next" in json["meta"]["links"]:
                     self.next_link = json["meta"]["links"]["next"]
+
+        if self.next_link is None:
+            return False
 
         if self.fingerprint is not None and self.next_link is not None:
             response = TronscanAPI.byNext(self.next_link)
@@ -233,7 +244,6 @@ class TronscanAPI:
             response = TronscanAPI.byNext(json["data"])
 
     def Calc(self, json):
-        print(json)
         if "data" in json:
 
             for row in json["data"]:
@@ -283,6 +293,7 @@ class TronscanAPI:
         return int(amount) / 1000000
 
     def looper(self, address: str, contract: str):
+        TronscanAPI.writeFile("", self.outputfile)
         json = self.getTRC20(address, contract, 100)
         if json == 2:
             print("retry in 20 seconds")
@@ -290,10 +301,44 @@ class TronscanAPI:
             self.looper(address, contract)
 
         result = dict()
+        p = 0
         while True:
             with GracefulInterruptHandler() as hp:
                 self.Calc(json)
-                result = self.getNextLoop(json)
+                try:
+                    result = self.getNextLoop(json)
+
+                except TypeError as te:
+                    print("☯︎ ", te)
+                    continue
+
+                except requests.exceptions.Timeout as eg:
+                    # Maybe set up for a retry, or continue in a retry loop
+                    print("☯︎ request time out", eg)
+                    continue
+
+                except requests.exceptions.ConnectionError as ef:
+                    # Maybe set up for a retry, or continue in a retry loop
+                    print("☯︎ request time out", ef)
+                    continue
+
+                except requests.exceptions.TooManyRedirects as ep:
+                    # Tell the user their URL was bad and try a different one
+                    print("☯︎ too many requests now", ep)
+                    continue
+
+                except requests.exceptions.HTTPError as eh:
+                    print("☯︎ http error is now", eh)
+                    continue
+
+                except ReadTimeoutError as h:
+                    print("☯︎ time out", h)
+                    continue
+
+                except requests.exceptions.RequestException as ej:
+                    # catastrophic error. bail.
+                    print("☯︎ nothing but try again later", ej)
+                    continue
 
                 if not result:
                     print("finished..")
@@ -303,7 +348,9 @@ class TronscanAPI:
                 if isinstance(result, dict):
                     json = result
 
-                print('\r' + statement_process.format(self.records, self.next_link))
+                p += 1
+
+                print('\n' + statement_process.format(p, self.records, self.next_link))
 
                 if hp.interrupted:
                     raise TypeError("Program exit")
@@ -322,8 +369,7 @@ class TronscanAPI:
 class USDTApp(TronscanAPI):
 
     def __init__(self):
-        super()
-        self.fingerprint = ""
+        super().__init__()
 
     def _resetZero(self):
         self.outgoing = 0
@@ -511,3 +557,75 @@ class Analysis:
         self.bookleger[fromadd]["hit"] += 1
         self.bookleger[toadd]["bal"] += float(val)
         self.bookleger[toadd]["hit"] += 1
+
+
+import signal
+import threading
+import pysigset
+
+
+class SubLayerAnalysis:
+    def __init__(self):
+        self.booklegerlist = []
+        self.jsonfile = ""
+        self.holdself = " "
+        self.scan_top = 4
+        self.scan_at = 0
+        self.scan_task = {}
+
+    def find_task(self):
+        n = 0
+        while len(self.scan_task.items()) > 0:
+            for k, t in self.scan_task.items():
+                if t.done():
+                    del self.scan_task[k]
+                    print(f"processed address {k} from the listed")
+            print(f"wait - {n}")
+            n += 1
+            time.sleep(3)
+
+        print("sub layer is not done")
+
+    def start(self, address: str):
+        asyncio.run(self.corstart(address))
+
+    async def corstart(self, holder_address: str):
+        self.holdself = holder_address
+        self.jsonfile = file_analysis.format(holder_address)
+        with open(self.jsonfile, newline='') as f:
+            self.booklegerlist = json.loads(f.read())
+            if "ranks" in self.booklegerlist:
+                self.booklegerlist = self.booklegerlist["ranks"]
+
+        if len(self.booklegerlist) == 0:
+            return
+
+        for ob in self.booklegerlist:
+            print(ob)
+            if int(ob["bal"]) > 0 and ob["address"] != self.holdself and self.scan_at < self.scan_top:
+                address = ob["address"]
+                print(f"on task for scanning address {address}")
+                # loop = asyncio.new_event_loop()
+                # Set the new event loop as the current event loop for the current thread
+                # asyncio.set_event_loop(loop)
+                # set the new event in here
+                # ft = loop.create_task(self.newUsdtRun(address))
+                # ft = await asyncio.to_thread(self.newUsdtRun, address)
+                # Start a background thread
+                thread = threading.Thread(target=self.newUsdtRun, args=[address])
+                thread.start()
+                self.scan_task[address] = thread
+                self.scan_at += 1
+
+        # self.find_task()
+        # await asyncio.gather([v for k, v in self.scan_task.items()])
+
+        for k, v in self.scan_task.items():
+            v.join()
+
+    def signal_handler(self, signum, frame):
+        print(f"Signal {signum} received.")
+
+    def newUsdtRun(self, address_t: str):
+        USDTApp().CollectionTransactionFromTronForUSDT(address_t)
+        Analysis().start(address_t)
