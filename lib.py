@@ -2,13 +2,16 @@
 # coding: utf-8
 import asyncio
 import csv
+import glob
 import json
 import os
 import signal
 import time
 from datetime import datetime
 from typing import Union
-
+import signal
+import threading
+import itertools as it
 import requests
 
 # import sys
@@ -19,8 +22,8 @@ from urllib3.exceptions import ReadTimeoutError
 NETWORK = "mainnet"
 ROOT = os.path.join(os.path.dirname(__file__))
 statement = 'End : {}, IO File {}'
-file_format = 'reports/report_{}.txt'
-file_analysis = 'analysis/analysis_{}.json'
+file_format = 'data/reports/report_{}.txt'
+file_analysis = 'data/analysis/analysis_{}.json'
 file_hold_format = 'rehold_{}.txt'
 filelog_format = 'log_{}.txt'
 statement_process = 'Processed page: {} {}, {}'
@@ -392,7 +395,6 @@ class TronscanAPI:
 
 
 class USDTApp(TronscanAPI):
-
     def __init__(self):
         super().__init__()
 
@@ -418,6 +420,10 @@ class USDTApp(TronscanAPI):
         self.looper(holder, coin)
 
 
+def multiple_file_types(*patterns):
+    return it.chain.from_iterable(glob.iglob(pattern) for pattern in patterns)
+
+
 class Analysis:
     def __init__(self):
         self.hodlr = []
@@ -441,29 +447,72 @@ class Analysis:
             return self.tags[address]
         return ""
 
+    def handle_history(self):
+        files = self.report_list()
+        print(f"total files: {len(files)}")
+        for f in files:
+            self.start(f)
+
+    def report_list(self) -> list:
+        os.chdir("data/reports")
+        file_head = "report"
+        tmp = []
+        for file in multiple_file_types("*.txt"):
+            key_len = len(file_head)
+            if file[:key_len] == file_head:
+                test_ep = file[key_len:(len(file) - len(".txt"))]
+                gidchan = str(test_ep).split("_")
+                address = gidchan[1]
+                tmp.append(address)
+
+        parent_folder = os.path.join("../../")
+        os.chdir(parent_folder)
+        return tmp
+
+    def _predat(self, address: str):
+        self.logfile = file_format.format(address)
+        self.outfile = file_analysis.format(address)
+        self.hodlr = []
+        self.booklegerlist = []
+        self.bookleger = dict()
+        self.line_scan = 0
+
     def start(self, holder_address: str):
-        self.logfile = file_format.format(holder_address)
-        self.outfile = file_analysis.format(holder_address)
+        self._predat(holder_address)
         file1 = open(self.logfile, 'r')
         _lines = file1.readlines()
         _sum = len(_lines)
-        print(f"total lines should be {_sum}")
         # Strips the newline character
-
+        if _sum == 0:
+            return
+        # print(f"total lines -> {_sum}")
+        net = 0
+        t_out = 0
+        t_in = 0
         for line in _lines:
             self.line_scan += 1
             # print("Line{}: {} \n".format(self.line_scan, line.strip()), end="\r")
+            if "Report" in line:
+                continue
+            if "Total" in line:
+                continue
+            if "Net" in line:
+                net = line.replace("Net ", "")
+                continue
+            if len(line) == 0:
+                continue
             try:
                 self.processLine(line)
             except IndexError:
-                pass
+                continue
 
             if self.line_scan == _sum:
-                self.ender()
+                self.ender(net, t_out, t_in)
 
-    def ender(self):
+    def ender(self, net_balance, out, inflo):
         self.hodlr = []
         # self book ledger list book yes
+        balance_temp = 0
         for k, v in self.bookleger.items():
             if k not in self.hodlr:
                 self.hodlr.append(k)
@@ -473,11 +522,15 @@ class Analysis:
                     "hit": v["hit"],
                     "mark": self.tagging(k)
                 })
+                balance_temp += v["bal"]
 
         self.booklegerlist = sorted(self.booklegerlist, key=lambda x: -x["bal"])
 
         with open(self.outfile, 'w') as f:
             json_str = json.dumps({
+                "net_balance": balance_temp if net_balance == 0 else net_balance,
+                "out": out,
+                "in": inflo,
                 "ranks": self.booklegerlist
             }, indent=self._indent)
             # data = jsonStr.encode(self._encoding)
@@ -519,10 +572,6 @@ class Analysis:
         self.bookleger[toadd]["hit"] += 1
 
 
-import signal
-import threading
-
-
 class SubLayerAnalysis:
     def __init__(self):
         self.booklegerlist = []
@@ -542,7 +591,6 @@ class SubLayerAnalysis:
             print(f"wait - {n}")
             n += 1
             time.sleep(3)
-
         print("sub layer is not done")
 
     def start(self, address: str):
@@ -571,9 +619,9 @@ class SubLayerAnalysis:
                 # ft = loop.create_task(self.newUsdtRun(address))
                 # ft = await asyncio.to_thread(self.newUsdtRun, address)
                 # Start a background thread
-                thread = threading.Thread(target=self.newUsdtRun, args=[address])
-                thread.start()
-                self.scan_task[address] = thread
+                x = threading.Thread(target=self.newUsdtRun, args=[address])
+                x.start()
+                self.scan_task[address] = x
                 self.scan_at += 1
 
         # self.find_task()
@@ -589,3 +637,52 @@ class SubLayerAnalysis:
         USDTApp().skipDupFile().CollectionTransactionFromTronForUSDT(address_t)
         Analysis().start(address_t)
         SubLayerAnalysis().start(address_t)
+
+
+class AnalysisMacro:
+    def __init__(self):
+        self.folder = "data/analysis"
+        self.handle_address = ""
+        self.metadata = {}
+        self.rendered = False
+
+    def start(self):
+        file_pattern = "analysis_*.json"  # Replace with your specific file name pattern
+        # Use glob to search for files with the specified name pattern
+        # search = os.path.join(os.path.dirname(__file__), self.folder, file_pattern)
+        search = os.path.join(self.folder, file_pattern)
+        file_list = glob.glob(search)
+        # Loop over each file and perform some operation
+        for file_path in file_list:
+            file_name = os.path.basename(file_path)
+            self.handle_address = file_name.replace("analysis_", "").replace(".json", "")
+            self._inside(file_path)
+
+    def _inside(self, file):
+        self.rendered = False
+        self.metadata = {
+            "from": [],
+            "to": []
+        }
+        with open(file, newline='') as f:
+            self.rf = json.loads(f.read())
+
+            if "ranks" in self.rf:
+                self.rf = self.rf["ranks"]
+                for r in self.rf:
+                    if r['mark'] != "":
+                        if int(r['bal']) > 0:
+                            self.metadata["to"].append(r['mark'])
+                            self.rendered = True
+                        if int(r['bal']) < 0:
+                            self.metadata["from"].append(r['mark'])
+                            self.rendered = True
+
+            if self.rendered is True:
+                print(f"{self.handle_address} deals with ")
+                # print(self.metadata)
+                if len(self.metadata['to']) > 0:
+                    print(
+                        f"It is possible the address is generated by the exchange {self.metadata['to'][0]}  for deposit")
+                else:
+                    print("exchange find withdrawals")
