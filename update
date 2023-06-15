@@ -47,7 +47,11 @@ gitpush(){
     git push
     echo "♻️ You can open ${GIT_LOC} or git clone ${GIT_LOC}.git to copy to the local"
 }
-
+removeRemote(){
+  git rm --cached enp
+  git commit -m "remove enp file system"
+}
+enp/bin/python -m pip freeze | grep -vE '^(pyobjc-|pyobjc).*==' | awk '{print $1}' > requirements.txt
 GIT_LOC=https://github.com/tokenchain/trongridtracker.git
 VERSION=$(cat version)
 increment_version $VERSION > version

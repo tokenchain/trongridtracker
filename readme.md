@@ -32,3 +32,21 @@ Run for simple USDT analysis given from the starting key address
 This will generate two files
 1. report database for all the transactions
 2. analysis for incoming and outgoing transactions for each address
+
+
+```
+TronscanAPI.writeFile(response.text, filename)
+```
+
+
+### Open a virtual environment
+```
+mkdir -p enp
+python3.11 -m venv enp
+```
+
+
+### Online Rendering lets try
+http://magjac.com/graphviz-visual-editor/
+
+for limited edges only.

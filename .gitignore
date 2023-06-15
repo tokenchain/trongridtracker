@@ -8,3 +8,10 @@ rehold_*
 report_*
 analysis_*
 test*
+/analysis
+/reports
+summart.txt
+testmain.py
+/data
+/archive
+/enp
