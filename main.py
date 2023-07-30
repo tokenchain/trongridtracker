@@ -17,6 +17,7 @@ def just_this(t: str):
 def only_read(f: str):
     Analysis().start(f)
 
+
 def local_analysis():
     Analysis().handle_history()
 

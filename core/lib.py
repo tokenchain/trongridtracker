@@ -33,6 +33,7 @@ ROOT = os.path.join(os.path.dirname(__file__))
 statement = 'End : {}, IO File {}'
 file_format = 'data/reports/report_{}.txt'
 file_analysis = 'data/analysis/analysis_{}.json'
+case_report_summary = 'data/reports/summary_{}.txt'
 file_hold_format = 'rehold_{}.txt'
 filelog_format = 'log_{}.txt'
 statement_process = 'Processed page: {} {}\n'
@@ -315,6 +316,12 @@ class TronscanAPI:
                     file_name = dispo.replace("attachment;filename=", "")
                     file_name = f"data/oklink/{file_name}"
                     TronscanAPI.writeFile(response.text, file_name)
+
+            elif dat["code"] == 500:
+                print("need to wait")
+                time.sleep(10)
+                return TronscanAPI.getOKLinkFile(account)
+
         else:
             print(response.content)
             print("connection problem occured")
@@ -770,9 +777,14 @@ class Analysis(WithTags):
         super().__init__()
         self.hodlr = []
         self.booklegerlist = []
+        self.exchange_assoc_book = {
+            "head": []
+        }
+        self.exchanges_wallets = []
         self.bookleger = dict()
         self.logfile = ""
         self.outfile = ""
+        self.exchange_re = ""
         self.line_scan = 0
         self._indent = 4
         self._encoding = "utf-8"
@@ -784,6 +796,57 @@ class Analysis(WithTags):
         if address in self.tags:
             return self.tags[address]
         return ""
+
+    def add_exchange_to_list(self, depo_wallet: str):
+        for n in self.exchanges_wallets:
+            if n == depo_wallet:
+                return
+
+        self.exchanges_wallets.append(depo_wallet)
+
+    def handle_history_find_exchange_related_trnx(self, case_name: str):
+        files = self.report_list()
+        print(f"total report files: {len(files)}")
+        self.exchange_re = case_report_summary.format(case_name)
+        self.exchanges_wallets = []
+        self.exchange_assoc_book["head"] = [
+            f"### SUMMARY of {case_name.upper()}",
+            f"# Scanned total related addresses of {len(files)} from the top rankings and documented as below:",
+            "",
+            "",
+            ""
+        ]
+
+        for f in files:
+            self.exchange_assoc(f)
+
+        content_ex = ""
+
+        for v in self.exchange_assoc_book:
+            if v == "head":
+                continue
+
+            total = self.bookleger[v]["bal"]
+            totalhit = self.bookleger[v]["hit"]
+            mark = self.tagging(v)
+            if total > 0:
+                action = "transfer to"
+            else:
+                action = "received from"
+            head = f"\n\n## Transactions: {totalhit}, total USDT {abs(total)} {action} {mark}\n"
+            content = "\n".join(self.exchange_assoc_book[v])
+            content_ex += head + content
+
+        heX = ",".join(self.exchanges_wallets)
+        LineX = f"The associated exchanges are: {heX}"
+        self.exchange_assoc_book["head"].insert(3, LineX)
+
+        with open(self.exchange_re, 'w') as f:
+            write_daa = "\n".join(self.exchange_assoc_book["head"])
+            f.write(write_daa + content_ex)
+            f.close()
+
+        print(help.format(FILENAME=self.exchange_re))
 
     def handle_history(self):
         files = self.report_list()
@@ -856,9 +919,42 @@ class Analysis(WithTags):
 
         return net_count == 1
 
+    def exchange_assoc(self, holder_address: str):
+        self._predat(holder_address)
+        print(self.logfile)
+        self.line_scan = 0
+        ok = self.check_valid_data(self.logfile)
+        if ok is False:
+            print(f"❌ File {self.logfile} is invalid! will need to remove contain now.")
+            TronscanAPI.writeFile("", self.logfile)
+            return
+        file1 = open(self.logfile, 'r')
+        _lines = file1.readlines()
+        _sum = len(_lines)
+        # Strips the newline character
+        if _sum == 0:
+            return
+        pag = {
+            "net_balance": 0,
+            "out": 0,
+            "in": 0,
+        }
+        print(f"start line - sum {_sum}")
+        for line in _lines:
+            self.line_scan += 1
+            if self.isFooter(line, pag) is True:
+                continue
+            try:
+                self.processLine(holder_address, line)
+                self.processExchange_read(line)
+            except IndexError:
+                print("index erro. skip")
+                continue
+
     def start(self, holder_address: str):
         self._predat(holder_address)
         print(self.logfile)
+        self.line_scan = 0
         ok = self.check_valid_data(self.logfile)
         if ok is False:
             print(f"❌ File {self.logfile} is invalid! will need to remove contain now.")
@@ -871,40 +967,52 @@ class Analysis(WithTags):
         if _sum == 0:
             return
         # print(f"total lines -> {_sum}")
-        net = 0
-        t_out = 0
-        t_in = 0
+        pag = {
+            "net_balance": 0,
+            "out": 0,
+            "in": 0,
+        }
         print(f"start line - sum {_sum}")
+
         for line in _lines:
             self.line_scan += 1
-            # print("Line{}: {} \n".format(self.line_scan, line.strip()), end="\r")
-            if "Total outgoing" in line:
-                a = "Total outgoing USDT: "
-                b = line.replace(a, "").split("/")
-                t_out = int(float(b[0].strip()))
+            if self.isFooter(line, pag) is True:
                 continue
 
-            if "Total incoming" in line:
-                a = "Total incoming USDT: "
-                b = line.replace(a, "").split("/")
-                t_in = int(float(b[0].strip()))
-                continue
-
-            if "Net" in line and line[0] == "N":
-                net = int(float(line.replace("Net ", "")))
-                continue
-
-            if len(line) == 0:
-                continue
             try:
-                self.processLine(line)
+                self.processLine(holder_address, line)
             except IndexError:
                 print("index erro. skip")
                 continue
-        self.ender(net, t_out, t_in)
+        self.ender(pag)
 
-    def ender(self, net_balance, out, inflo):
+    def isFooter(self, line: str, net_data: dict) -> bool:
+
+        if "Total outgoing" in line:
+            a = "Total outgoing USDT: "
+            b = line.replace(a, "").split("/")
+            net_data["out"] = int(float(b[0].strip()))
+            return True
+
+        if "Total incoming" in line:
+            a = "Total incoming USDT: "
+            b = line.replace(a, "").split("/")
+            net_data["in"] = int(float(b[0].strip()))
+            return True
+
+        if "Net" in line and line[0] == "N":
+            net_data["net_balance"] = int(float(line.replace("Net ", "")))
+            return True
+
+        if len(line) == 0:
+            return True
+        return False
+
+    def ender(self, reader_net: dict):
         self.hodlr = []
+        net_balance = reader_net["net_balance"]
+        out = reader_net["out"]
+        inflo = reader_net["in"]
         # self book ledger list book yes
         balance_temp = 0
         for k, v in self.bookleger.items():
@@ -933,7 +1041,40 @@ class Analysis(WithTags):
 
         print(help.format(FILENAME=self.outfile))
 
-    def processLine(self, line: str):
+    def processExchange_read(self, line: str, withDeposit: bool = False):
+        p = line.strip().split(",")
+        fromadd = p[1]
+        toadd = p[2]
+        val = p[0]
+        hash = p[4]
+        time = p[5]
+        if self.isTagged(fromadd) is False and self.isTagged(toadd) is False:
+            return
+        line_r = ""
+
+        if self.isTagged(fromadd):
+            which = self.tagging(fromadd)
+            line_r = f"\n   🏦 Withdrawal made from {which} {fromadd} with {val} to {toadd} at {time}\n"
+            line_r += f"   - HashID [{hash}]"
+            self.add_exchange_to_list(which)
+            if fromadd not in self.exchange_assoc_book:
+                self.exchange_assoc_book[fromadd] = []
+            self.exchange_assoc_book[fromadd].append(
+                line_r
+            )
+
+        if self.isTagged(toadd) and withDeposit:
+            which = self.tagging(toadd)
+            line_r = f"    🏦 Deposit made to {which} {toadd} from exchange personal account {fromadd} for {val} at {time}\n"
+            line_r += f"    - HashID [{hash}]\n"
+            self.add_exchange_to_list(which)
+            if toadd not in self.exchange_assoc_book:
+                self.exchange_assoc_book[toadd] = []
+            self.exchange_assoc_book[toadd].append(
+                line_r
+            )
+
+    def processLine(self, exclude_address: str, line: str):
         p = line.strip().split(",")
         # from
         fromadd = p[1]
@@ -941,6 +1082,8 @@ class Analysis(WithTags):
         toadd = p[2]
         # value
         val = p[0]
+        if fromadd == toadd == exclude_address:
+            return
 
         if fromadd not in self.hodlr:
             self.hodlr.append(fromadd)
@@ -1248,12 +1391,29 @@ def build_bot_tpl(name: str, iter: int):
     )
     dot.attr(
         ordering='out',
-        k='2.2',
-        overlap='prism0',
+        showboxes='true',
+        concentrate='true',
+        compound='true',
         rankdir='LR',
-        size='1000,25'
+        searchsize='10',
+        ranksep='4.2 equally',
+        size='1000,925'
     )
     return dot
+
+
+def build_chart_relational(name: str):
+    dot = graphviz.Digraph(
+        "PhiloDilemma",
+        engine='neato',
+        format='pdf',
+    )
+
+    dot.attr(
+        showboxes='true',
+        ranksep='4.2 equally',
+        size='1000,925'
+    )
 
 
 class GraphTron(WithTags):
@@ -1270,6 +1430,9 @@ class GraphTron(WithTags):
         self.exchange_user_deposits.append(deposit)
 
     def show_all(self):
+        if len(self.exchange_user_deposits) == 0:
+            print("There is no exchange associated account found.")
+            return
         for n in self.exchange_user_deposits:
             print(f"exchange user address: {n}")
 
