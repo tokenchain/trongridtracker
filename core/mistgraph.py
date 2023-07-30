@@ -41,10 +41,13 @@ class MistAnalysis:
         self.use_from = False
         self.use_to = False
         self.is_independence = False
+        self.enable_sidenote = False
         self.api = MistAcquireDat()
+
     def doIndependChart(self):
         self.is_independence = True
         return self
+
     def setThreadHoldUSD(self, n):
         self.scope = n
         return self
@@ -57,6 +60,10 @@ class MistAnalysis:
         self.use_to = True
         return self
 
+    def setEnableSideNote(self):
+        self.enable_sidenote = True
+        return self
+
     def startPlot(self):
         file_pattern = "*.json"  # Replace with your specific file name pattern
         # Use glob to search for files with the specified name pattern
@@ -65,7 +72,7 @@ class MistAnalysis:
         file_list = glob.glob(search)
         # Loop over each file and perform some operation
         for file_path in file_list:
-            file_name = os.path.basename(file_path)
+            # file_name = os.path.basename(file_path)
             self._inside(file_path, self.scope)
         self.end()
 
@@ -84,7 +91,7 @@ class MistAnalysis:
         self._excel_factory(path)
 
     def _personal_note(self, file, scope):
-        allsidenote = False
+
         self._main_address = ""
         with open(file, newline='') as f:
             self.rf = json.loads(f.read())
@@ -201,7 +208,6 @@ class MistAnalysis:
                 )
 
     def _inside(self, file, scope):
-        allsidenote = False
         with open(file, newline='') as f:
             self.rf = json.loads(f.read())
             # render_node = True
@@ -247,11 +253,9 @@ class MistAnalysis:
                         _font_colr = "white"
                         _shape = "folder"
                         _color = "darkslategrey"
-
                 else:
                     _color = "lightcoral"
-                    _lab = v["label"] + ":\n" + v["addr"]
-                    # print(_shape)
+                    _lab = f"[{v['label']}]\n{v['addr']}"
                     if "star" in _shape:
                         side_note = self.api.overview(_add)
                         _lab = _lab + side_note
@@ -259,11 +263,11 @@ class MistAnalysis:
                         _shape = "folder"
                         _color = "darkslategrey"
 
-                    if "fire" in _color and allsidenote:
+                    if self.enable_sidenote:
                         side_note = self.api.overview(_add)
                         _lab = _lab + side_note
 
-                #if "color" in v:
+                # if "color" in v:
                 #    _color = v["color"]
 
                 self.metadata["IDS"][_id] = {

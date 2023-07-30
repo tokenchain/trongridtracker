@@ -7,4 +7,4 @@ if __name__ == '__main__':
     # make the chart only
     bar = 10000
     bar_small = 100
-    ma.setThreadHoldUSD(bar).startPlot()
+    ma.setThreadHoldUSD(bar).setEnableSideNote().startPlot()

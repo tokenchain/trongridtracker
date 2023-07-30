@@ -57,7 +57,7 @@ def get_mist_cache_dict(address: str) -> dict:
 
 
 def get_mist_overview(address: str):
-    print(f"⛱️ Get profile from - {address}")
+    print(f"⛱️  Get profile from - {address}")
     url = f'https://dashboard.misttrack.io/api/v1/address_overview?coin=USDT-TRC20&address={address}'
     path = os.path.join("data/mist", personal_overview_file(address))
 
