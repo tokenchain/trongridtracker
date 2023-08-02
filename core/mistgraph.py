@@ -294,7 +294,6 @@ class MistAnalysis:
                     label=f"{count}筆,{__label}",
                     labeldistance='1.2',
                     labelangle='60',
-
                 )
 
                 self.edges += 1
@@ -308,9 +307,7 @@ class MistAnalysis:
                     fillcolor=ob["fillcolor"],
                     style="filled",
                     fontcolor=ob["fontcolor"],
-
                     label=ob["label"]
-
                 )
 
     def getId(self, _idx):
