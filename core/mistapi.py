@@ -154,6 +154,9 @@ class MistAcquireDat:
 
     def scan_addresses(self, file: str):
         path = os.path.join(self.inputfolder, file)
+        if os.path.isfile(path) is False:
+            print(f"Error the source file {file} is not found")
+            return
         f = open(path, "r")
         lines = f.readlines()
         ma = MistAcquireDat()
