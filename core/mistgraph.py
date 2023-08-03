@@ -14,6 +14,8 @@ import pandas as pd
 from pandas import DataFrame
 import openpyxl as ox
 
+from .utils import folder_paths
+
 
 class MistAnalysis:
     """
@@ -22,6 +24,11 @@ class MistAnalysis:
     """
 
     def __init__(self):
+        folder_paths([
+            "data/mist",
+            "data/mist/cache"
+        ])
+
         self.folder = "data/mist"
         self.handle_address = ""
         self.metadata = {

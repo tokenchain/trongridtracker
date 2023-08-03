@@ -2,13 +2,14 @@
 # @Date:  4:37 下午
 # @File: utils.py
 # @Author: liyf
+import os.path
 
 import execjs
 import hashlib
-import json
 
 import pandas as pd
 from pandas import DataFrame
+
 
 # ocr = ddddocr.DdddOcr(show_ad=False)
 
@@ -67,3 +68,9 @@ class ExcelBase:
 
     def setHeader(self, header: list):
         self._excel_header = header
+
+
+def folder_paths(folders: list):
+    for f in folders:
+        if os.path.isdir(f) is False:
+            os.makedirs(f)

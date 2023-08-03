@@ -10,7 +10,7 @@ from .lib import build_bot_tpl
 import pandas as pd
 from pandas import DataFrame
 import openpyxl as ox
-from .utils import ExcelBase
+from .utils import ExcelBase, folder_paths
 from .okapi import Cache
 
 
@@ -21,6 +21,11 @@ class ExcelGraphviz(ExcelBase):
     """
 
     def __init__(self):
+        folder_paths([
+            "data/excel",
+            "data/excel/cache"
+        ])
+
         self.folder = "data/excel"
         self.cache = Cache("data/excel/cache")
         self.handle_address = ""

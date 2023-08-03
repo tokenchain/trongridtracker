@@ -151,6 +151,15 @@ class TronscanAPI:
     on_proxy = False
 
     def __init__(self):
+        """
+
+        folder_paths([
+            "data/excel",
+            "data/excel/cache"
+        ])
+
+        """
+
         self.outgoing = 0
         self.outcount = 0
         self.incoming = 0

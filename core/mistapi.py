@@ -7,6 +7,7 @@ import os
 
 import requests
 from .lib import TronscanAPI
+from .utils import folder_paths
 
 MISTBASE = "https://dashboard.misttrack.io"
 
@@ -105,7 +106,13 @@ def get_mist_graph_api(address: str, data_params: dict):
     url = f'https://dashboard.misttrack.io/api/v1/address_graph_analysis'
     try:
         print(data_params)
-        response = requests.get(url, params=data_params, headers=getMistHeaders(), stream=True, timeout=600)
+        response = requests.get(
+            url,
+            params=data_params,
+            headers=getMistHeaders(),
+            stream=True,
+            timeout=600
+        )
     except (
             requests.ConnectionError,
             requests.exceptions.ReadTimeout,
@@ -115,8 +122,8 @@ def get_mist_graph_api(address: str, data_params: dict):
             requests.ReadTimeout,
             ConnectionResetError
     ) as e:
-        print(e)
-        return ""
+        print(f"errors or timeout from doing request from {url} ->")
+        return get_mist_graph_api(address, data_params)
 
     if response.status_code == 200:
         response.raw.decode_content = True
@@ -131,23 +138,28 @@ def get_mist_graph_api(address: str, data_params: dict):
         return ""
 
 
-def find_transactions():
-    path = os.path.join("data", "inputs", "list_scans.txt")
-    f = open(path, "r")
-    lines = f.readlines()
-    ma = MistAcquireDat()
-    for address in lines:
-        address = address.replace("\n", "")
-        ma.save(address)
-
-
 class MistAcquireDat:
     def __init__(self):
+        folder_paths([
+            "data/mist",
+            "data/inputs",
+            "data/mist/cache"
+        ])
         self.folder = "data/mist"
+        self.inputfolder = "data/inputs"
         self.tmp = {}
         # -1 incoming, 0 None, 1 outflow
         self.only_flow = 0
         self.cache = CacheMistApi("data/mist/cache")
+
+    def scan_addresses(self, file: str):
+        path = os.path.join(self.inputfolder, file)
+        f = open(path, "r")
+        lines = f.readlines()
+        ma = MistAcquireDat()
+        for address in lines:
+            address = address.replace("\n", "")
+            ma.save(address)
 
     def save(self, address: str, filter: list = []):
         filter_list = []
@@ -189,7 +201,6 @@ class MistAcquireDat:
     def overview(self, address: str) -> str:
 
         if address not in self.tmp:
-
             payload = self.cache.cache_transaction_get(address)
 
             self.tmp[address] = getPer(payload)

@@ -5,7 +5,8 @@
 
 import time
 import requests
-
+import os
+import json
 from .utils import Utils
 
 
@@ -82,5 +83,6 @@ class Cache:
         openfile.write(json.dumps(js))
         openfile.close()
         return js
+
 if __name__ == '__main__':
     parse()
