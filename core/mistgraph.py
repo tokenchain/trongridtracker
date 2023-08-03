@@ -210,6 +210,7 @@ class MistAnalysis:
     def _inside(self, file, scope):
         with open(file, newline='') as f:
             self.rf = json.loads(f.read())
+            print(file)
             # render_node = True
             if "graph_dic" not in self.rf:
                 return

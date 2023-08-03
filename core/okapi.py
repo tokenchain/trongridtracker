@@ -60,5 +60,27 @@ def parse():
         print('***' * 30)
 
 
+
+class Cache:
+    def __init__(self, transaction_cache: str):
+        self.transaction_cache = transaction_cache
+
+    def cache_transaction_get(self, hash: str):
+        path = os.path.join(self.transaction_cache, f"{hash}.res")
+        if os.path.isfile(path):
+            openfile = open(path, "r")
+            data = openfile.read()
+            if data.strip() == "":
+                return self.cachable_req(path, hash)
+            return json.loads(data)
+        else:
+            return self.cachable_req(path, hash)
+
+    def cachable_req(self, path: str, hash: str) -> dict:
+        js = get_json_transactions(hash, "BSC")
+        openfile = open(path, "w")
+        openfile.write(json.dumps(js))
+        openfile.close()
+        return js
 if __name__ == '__main__':
     parse()

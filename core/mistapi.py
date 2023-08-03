@@ -8,6 +8,8 @@ import os
 import requests
 from .lib import TronscanAPI
 
+MISTBASE = "https://dashboard.misttrack.io"
+
 
 def getMistHeaders():
     with open("data/mistcookie.txt", "r") as r:
@@ -20,69 +22,63 @@ def getMistHeaders():
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/114.0'
         }
     cookie_content = cookie_content.replace("\n", "")
+
     return {
         'Cookie': cookie_content,
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/114.0'
     }
 
 
-def personal_overview_file(address: str) -> str:
-    address_p = f"p_{address}.txt"
-    return address_p
-
-
-def get_mist_cache_dict(address: str) -> dict:
-    print(f"🏖️ Get profile from - {address}")
-    url = f'https://dashboard.misttrack.io/api/v1/address_overview?coin=USDT-TRC20&address={address}'
-    path = os.path.join("data/mist", personal_overview_file(address))
-
-    if os.path.isfile(path) is True:
-        with open(path, newline='') as f:
-            analysis_open = json.loads(f.read())
-            return analysis_open
+def get_json_address_overview(address: str) -> dict:
+    url = f'{MISTBASE}/api/v1/address_overview'
     try:
-        response = requests.get(url, headers=getMistHeaders())
+        response = requests.get(url, params={
+            "coin": "USDT-TRC20",
+            "address": address
+        }, headers=getMistHeaders(), timeout=30)
     except (
             requests.ConnectionError,
             requests.exceptions.ReadTimeout,
             requests.exceptions.Timeout,
             requests.exceptions.ConnectTimeout,
     ) as e:
-        print(e)
+        print(f"req {url} timeout. try again.")
+        return get_json_address_overview(address)
+
+    if response.status_code != 200:
+        print(f"ERROR from server. got {response.status_code}")
         return {}
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return {}
+
+    return response.json()
 
 
-def get_mist_overview(address: str):
-    print(f"⛱️  Get profile from - {address}")
-    url = f'https://dashboard.misttrack.io/api/v1/address_overview?coin=USDT-TRC20&address={address}'
-    path = os.path.join("data/mist", personal_overview_file(address))
+class CacheMistApi:
+    def __init__(self, transaction_cache: str):
+        self.transaction_cache = transaction_cache
 
-    if os.path.isfile(path) is True:
-        with open(path, newline='') as f:
-            analysis_open = json.loads(f.read())
-            return getPer(analysis_open)
+    def cache_transaction_get(self, address: str) -> dict:
+        path = os.path.join(self.transaction_cache, f"p_{address}.txt")
+        if os.path.isfile(path):
+            openfile = open(path, "r")
+            data = openfile.read()
+            check = json.loads(data)
+            if "msg" in check and check['msg'] == "NotLoggedIn":
+                print("data needs to be updated now.")
+                return self.cachable_req(path, address)
 
-    try:
-        response = requests.get(url, headers=getMistHeaders())
-    except (
-            requests.ConnectionError,
-            requests.exceptions.ReadTimeout,
-            requests.exceptions.Timeout,
-            requests.exceptions.ConnectTimeout,
-    ) as e:
-        print(e)
-        return ""
+            if data.strip() == "" or data == {}:
+                return self.cachable_req(path, address)
+            return json.loads(data)
+        else:
+            return self.cachable_req(path, address)
 
-    if response.status_code == 200:
-        path = os.path.join("data/mist", personal_overview_file(address))
-        TronscanAPI.writeFile(response.text, path)
-        return getPer(response.json())
-    else:
-        return ""
+    def cachable_req(self, path: str, address: str) -> dict:
+        print(f"⛱️  Get profile from - {address}")
+        js = get_json_address_overview(address)
+        openfile = open(path, "w")
+        openfile.write(json.dumps(js))
+        openfile.close()
+        return js
 
 
 def getPer(j: dict) -> str:
@@ -151,6 +147,7 @@ class MistAcquireDat:
         self.tmp = {}
         # -1 incoming, 0 None, 1 outflow
         self.only_flow = 0
+        self.cache = CacheMistApi("data/mist/cache")
 
     def save(self, address: str, filter: list = []):
         filter_list = []
@@ -185,11 +182,16 @@ class MistAcquireDat:
     def overviewdict(self, address: str) -> dict:
         k = f"dict_{address}"
         if k not in self.tmp:
-            self.tmp[k] = get_mist_cache_dict(address)
+            payload = self.cache.cache_transaction_get(address)
+            self.tmp[k] = payload
         return self.tmp[k]
 
     def overview(self, address: str) -> str:
+
         if address not in self.tmp:
-            self.tmp[address] = get_mist_overview(address)
+
+            payload = self.cache.cache_transaction_get(address)
+
+            self.tmp[address] = getPer(payload)
 
         return self.tmp[address]

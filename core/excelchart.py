@@ -10,66 +10,8 @@ from .lib import build_bot_tpl
 import pandas as pd
 from pandas import DataFrame
 import openpyxl as ox
-
-from .okapi import get_json_transactions
-
-
-class ExcelBase:
-    def _readDF(self, excel_file: str, sheet: str, header: list) -> DataFrame:
-        data = pd.read_excel(excel_file, sheet_name=sheet)
-        df = pd.DataFrame(data, columns=header)
-
-        return df
-
-    def _sheets(self, excel_file: str) -> list:
-        sheetsf = []
-        with pd.ExcelFile(excel_file) as f:
-            sheets = f.sheet_names
-            for sht in sheets:
-                # df = f.parse(sht)
-                sheetsf.append(sht)
-        return sheetsf
-
-    def find_sheet(self, full: str, list_sheets: list):
-        h1 = len(full)
-        for sh in list_sheets:
-            h = len(sh)
-            if full[h1 - h:h1] == sh.lower():
-                return sh
-        return ""
-
-    def _get_sheet(self, sheet: str, header: list) -> DataFrame:
-        return self._readDF(self._excel_file, sheet, header=header)
-
-    def setExcelFile(self, path: str):
-        self._excel_file = path
-
-    def setHeader(self, header: list):
-        self._excel_header = header
-
-
-class Cache:
-
-    def __init__(self):
-        self.transaction_cache = "data/excel/cache"
-
-    def cache_transaction_get(self, hash: str):
-        path = os.path.join(self.transaction_cache, f"{hash}.res")
-        if os.path.isfile(path):
-            openfile = open(path, "r")
-            data = openfile.read()
-            if data.strip() == "":
-                return self.cachable_req(path, hash)
-            return json.loads(data)
-        else:
-            return self.cachable_req(path, hash)
-
-    def cachable_req(self, path: str, hash: str) -> dict:
-        js = get_json_transactions(hash, "BSC")
-        openfile = open(path, "w")
-        openfile.write(json.dumps(js))
-        openfile.close()
-        return js
+from .utils import ExcelBase
+from .okapi import Cache
 
 
 class ExcelGraphviz(ExcelBase):
@@ -80,7 +22,7 @@ class ExcelGraphviz(ExcelBase):
 
     def __init__(self):
         self.folder = "data/excel"
-        self.cache = Cache()
+        self.cache = Cache("data/excel/cache")
         self.handle_address = ""
         self.metadata = {
             "LINK": {},
