@@ -3,7 +3,6 @@ charset-normalizer==3.1.0
 coloredlogs==15.0.1
 contourpy==1.0.7
 cycler==0.11.0
-ddddocr==1.0.6
 et-xmlfile==1.1.0
 flatbuffers==23.5.26
 fonttools==4.39.4

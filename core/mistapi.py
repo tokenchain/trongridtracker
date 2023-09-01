@@ -164,13 +164,17 @@ class MistAcquireDat:
             address = address.replace("\n", "")
             ma.save(address)
 
-    def save(self, address: str, filter: list = []):
+    def dateRange(self, from_d: str, to_d: str):
+        self.filter_date = [from_d, to_d]
+        return self
+
+    def save(self, address: str):
         filter_list = []
-        if len(filter) > 0:
-            filter_list = f"{filter[0]}%2000:00:00~{filter[1]}%2000:00:00"
+        if len(self.filter_date) > 0:
+            filter_list = f"{self.filter_date[0]} 00:00:00~{self.filter_date[1]} 00:00:00"
 
         data_fs = {
-            "time_filter": filter
+            "time_filter": filter_list
         }
 
         if self.only_flow < 0:
@@ -182,7 +186,10 @@ class MistAcquireDat:
         content = get_mist_graph_api(address, data_fs)
         if content == "":
             return
-        file_name = f"{address}-{filter}.json"
+        if len(self.filter_date) > 0:
+            file_name = f"{address}-timed.json"
+        else:
+            file_name = f"{address}.json"
         file = os.path.join(self.folder, file_name)
         TronscanAPI.writeFile(content, file)
 
@@ -201,11 +208,45 @@ class MistAcquireDat:
             self.tmp[k] = payload
         return self.tmp[k]
 
-    def overview(self, address: str) -> str:
+    def calculateOverview(self, address: str):
+        file_ = f"{address}-timed.json"
+        path = os.path.join(self.folder, file_)
 
+        if os.path.isfile(path) is False:
+            print(f"The file for {address} with time range is not found.")
+            return
+
+        f = open(path, "r")
+        lines = f.read()
+        ok = json.loads(lines)
+        main_id = ""
+        for s in ok["graph_dic"]["node_list"]:
+            main_address = s["addr"]
+            if main_address.lower() == address.lower():
+                main_id = s["id"]
+                break
+
+        expense = 0
+        income = 0
+
+        for edges in ok["graph_dic"]["edge_list"]:
+            val = int(edges["val"])
+            if edges["from"] == main_id:
+                expense += val
+
+            if edges["to"] == main_id:
+                income += val
+
+        first = ok["graph_dic"]["first_tx_datetime"]
+        latest = ok["graph_dic"]["latest_tx_datetime"]
+        txcount = ok["graph_dic"]["tx_count"]
+        line = f"First {first} - Last {latest}|tx_count:{txcount}|income: {income}|expense:{expense}"
+        line = line.replace("|", "\n")
+        print(line)
+
+    def overview(self, address: str) -> str:
         if address not in self.tmp:
             payload = self.cache.cache_transaction_get(address)
-
             self.tmp[address] = getPer(payload)
 
         return self.tmp[address]

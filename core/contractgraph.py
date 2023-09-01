@@ -1,10 +1,3 @@
-class ContractPathGraph:
-    def __init__(self):
-        self.legend = ""
-
-    def setLabel(self, n: str):
-        self.legend = n
-        return
 
 # @source http://magjac.com/graphviz-visual-editor/
 ## "It encodes the so-called philosophers dilemma.  Neato pretty much approximates the way how humans would layout the graph." Contributed by Manfred Jeusfield.
