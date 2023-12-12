@@ -2,6 +2,7 @@
 # coding: utf-8
 import glob
 import json
+import math
 import os
 
 from .builder import build_bot_tpl
@@ -10,6 +11,8 @@ import pandas as pd
 from pandas import DataFrame
 import openpyxl as ox
 from core.common.utils import FolderBase, ReadCombinedFile, find_key
+
+import statistics
 
 
 class MistAnalysis(FolderBase):
@@ -34,6 +37,7 @@ class MistAnalysis(FolderBase):
         self.use_to = False
         self.is_independence = False
         self.enable_sidenote = False
+        self._wire_thickness_requirement = False
         self.api = MistAcquireDat(project)
         self.api.folder = self.mist_folder
         self.api.inputfolder = self.inputfolder
@@ -49,6 +53,8 @@ class MistAnalysis(FolderBase):
             "IDS": {},
             "USE_NODE": [],
             "FROM_LIST": [],
+            "MEAN": 0,
+            "STD": 0
         }
 
     def setThreadHoldUSD(self, n):
@@ -166,63 +172,56 @@ class MistAnalysis(FolderBase):
                     "style": "filled",
                     "fontcolor": _font_colr,
                     "label": _lab,
-                    "address": v["addr"]
+                    "address": v["addr"],
+                    "thickness": '1'
                 }
 
-            for v in edges:
-                if v["val"] < scope:
-                    continue
-                if "color" in v:
-                    _color = v["color"]["color"]
+            self._weighted_thickness(edges)
+            self._final_sort(edges, scope, self.extra_func_personalize_note)
+            self._render_all_nodes2()
+
+    def _weighted_thickness(self, raw_nodes):
+        if self._wire_thickness_requirement is True:
+            listnumber = [float(s["val"]) for s in raw_nodes]
+            mean = statistics.mean(listnumber)
+            # Calculate the squared differences
+            squared_differences = [(x - mean) ** 2 for x in listnumber]
+            # Calculate the sum of the squared differences
+            sum_of_squared_differences = sum(squared_differences)
+            # Calculate the number of numbers in the list
+            n = len(listnumber)
+            # Calculate the standard deviation
+            ef = sum_of_squared_differences / (n - 1)
+            standard_deviation = mean / 3
+            self.metadata["MEAN"] = mean
+            self.metadata["STD"] = standard_deviation
+            print("mean", mean)
+            print("std", standard_deviation)
+            s2 = standard_deviation * 2
+            s3 = standard_deviation * 3
+            s1 = standard_deviation
+            for g in raw_nodes:
+                _id = self.getId(g["from"])
+
+                _val = g["val"]
+                if _val > mean:
+                    if _val > mean + s3:
+                        self.metadata["IDS"][_id]["thickness"] = '8'
+                    elif _val > mean + s2:
+                        self.metadata["IDS"][_id]["thickness"] = '7'
+                    elif _val > mean + s1:
+                        self.metadata["IDS"][_id]["thickness"] = '6'
+                    else:
+                        self.metadata["IDS"][_id]["thickness"] = '5'
                 else:
-                    _color = "red"
-                count = len(v["tx_hash_list"])
-                __label = v["label"]
-                __label_arrow = f"{count}筆,{__label}"
-                self.dot.edge(
-                    self.getId(v["from"]),
-                    self.getId(v["to"]),
-                    color=_color,
-                    label=__label_arrow
-                )
-
-                if self._main_address == self.getId(v["to"]) and self.use_from:
-                    from_id = self.getId(v["from"])
-                    address_from = self.metadata["IDS"][from_id]["address"]
-                    # print("record -> excel")
-                    self.metadata["FROM_LIST"].append({
-                        "info": self.api.overviewdict(address_from),
-                        "address": address_from,
-                        "spent_count": count,
-                        "contribute": __label
-                    })
-
-                if self._main_address == self.getId(v["from"]) and self.use_to:
-                    from_id = self.getId(v["to"])
-                    address_from = self.metadata["IDS"][from_id]["address"]
-                    # print("record -> excel")
-
-                    self.metadata["FROM_LIST"].append({
-                        "info": self.api.overviewdict(address_from),
-                        "address": address_from,
-                        "spent_count": count,
-                        "contribute": __label
-                    })
-
-                self.edges += 1
-
-            for _id in self.metadata["USE_NODE"]:
-                # if render_node:
-                ob = self.metadata["IDS"][_id]
-                self.dot.node(
-                    _id,
-                    shape=ob["shape"],
-                    fillcolor=ob["fillcolor"],
-                    style="filled",
-                    fontcolor=ob["fontcolor"],
-                    label=ob["label"],
-                    constraint="false"
-                )
+                    if _val < mean - s3:
+                        self.metadata["IDS"][_id]["thickness"] = '1'
+                    elif _val < mean - s2:
+                        self.metadata["IDS"][_id]["thickness"] = '2'
+                    elif _val < mean - s1:
+                        self.metadata["IDS"][_id]["thickness"] = '3'
+                    else:
+                        self.metadata["IDS"][_id]["thickness"] = '4'
 
     def _inside(self, file, scope):
         with open(file, newline='') as f:
@@ -294,39 +293,92 @@ class MistAnalysis(FolderBase):
                     "style": "filled",
                     "fontcolor": _font_colr,
                     "label": _lab,
+                    "thickness": "1"
                 }
 
-            for v in edges:
-                if v["val"] < scope:
-                    continue
-                if "color" in v:
-                    _color = v["color"]["color"]
-                else:
-                    _color = "red"
-                count = len(v["tx_hash_list"])
-                __label = v["label"]
-                self.dot.edge(
-                    self.getId(v["from"]),
-                    self.getId(v["to"]),
-                    color=_color,
-                    label=f"{count}筆,{__label}",
-                    labeldistance='1.2',
-                    labelangle='60',
-                )
+            self._weighted_thickness(edges)
+            self._final_sort(edges, scope)
+            self._render_all_nodes()
 
-                self.edges += 1
+    def _render_all_nodes(self):
+        for _id in self.metadata["USE_NODE"]:
+            # if render_node:
+            ob = self.metadata["IDS"][_id]
+            self.dot.node(
+                _id,
+                shape=ob["shape"],
+                fillcolor=ob["fillcolor"],
+                style="filled",
+                fontcolor=ob["fontcolor"],
+                label=ob["label"]
+            )
 
-            for _id in self.metadata["USE_NODE"]:
-                # if render_node:
-                ob = self.metadata["IDS"][_id]
-                self.dot.node(
-                    _id,
-                    shape=ob["shape"],
-                    fillcolor=ob["fillcolor"],
-                    style="filled",
-                    fontcolor=ob["fontcolor"],
-                    label=ob["label"]
-                )
+    def _render_all_nodes2(self):
+        for _id in self.metadata["USE_NODE"]:
+            # if render_node:
+            ob = self.metadata["IDS"][_id]
+            self.dot.node(
+                _id,
+                shape=ob["shape"],
+                fillcolor=ob["fillcolor"],
+                style="filled",
+                fontcolor=ob["fontcolor"],
+                label=ob["label"],
+                constraint="false"
+            )
+
+    def _final_sort(self, edges_nodes_dict, scope: int, extra_func=None):
+        """
+        render the final graphivz image with the given configs
+        """
+        for v in edges_nodes_dict:
+            if v["val"] < scope:
+                continue
+            if "color" in v:
+                _color = v["color"]["color"]
+            else:
+                _color = "red"
+            count = len(v["tx_hash_list"])
+            __label = v["label"]
+            self.dot.edge(
+                self.getId(v["from"]),
+                self.getId(v["to"]),
+                color=_color,
+                label=f"{count}筆,{__label}",
+                labeldistance='1.2',
+                labelangle='60',
+                penwidth=self.getThickness(v["from"])
+            )
+            if extra_func is not None:
+                extra_func(v, count, __label)
+
+            self.edges += 1
+
+    def extra_func_personalize_note(self, item_note: dict, spend_count: int, label_contribution: str):
+        """
+        the extra personalized note for personal note only.
+        """
+        if self._main_address == self.getId(item_note["to"]) and self.use_from:
+            from_id = self.getId(item_note["from"])
+            address_from = self.metadata["IDS"][from_id]["address"]
+            # print("record -> excel")
+            self.metadata["FROM_LIST"].append({
+                "info": self.api.overviewdict(address_from),
+                "address": address_from,
+                "spent_count": spend_count,
+                "contribute": label_contribution
+            })
+
+        if self._main_address == self.getId(item_note["from"]) and self.use_to:
+            from_id = self.getId(item_note["to"])
+            address_from = self.metadata["IDS"][from_id]["address"]
+            # print("record -> excel")
+            self.metadata["FROM_LIST"].append({
+                "info": self.api.overviewdict(address_from),
+                "address": address_from,
+                "spent_count": spend_count,
+                "contribute": label_contribution
+            })
 
     def getId(self, _idx):
         if _idx in self.metadata["LINK"]:
@@ -338,6 +390,13 @@ class MistAnalysis(FolderBase):
             self.metadata["USE_NODE"].append(use_alternative)
 
         return use_alternative
+
+    def getThickness(self, _id_index) -> int:
+        if self._wire_thickness_requirement is False:
+            return 1
+        else:
+            code_id = self.getId(_id_index)
+            return self.metadata["IDS"][code_id]["thickness"]
 
     def end(self):
         self.dot.render(
@@ -421,6 +480,10 @@ class MistAnalysis(FolderBase):
         except FileNotFoundError:
             pass
 
+        return self
+
+    def lineThickness(self, auto: bool = True):
+        self._wire_thickness_requirement = auto
         return self
 
     def acquireFromAddress(self, addresses: list):

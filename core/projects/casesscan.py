@@ -441,4 +441,5 @@ def ppd_analysis():
         "TEZVBjomubVSn41hvenJ8KyHEzEZCeuC7B"
     ])
     ma.setName("firstblood-pdd")
+    ma.lineThickness()
     ma.setThreadHoldUSD(bar_small).setEnableSideNote().startPlot()
