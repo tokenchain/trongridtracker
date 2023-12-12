@@ -1,10 +1,10 @@
-from core.mistgraph import MistAnalysis
+# from core.avesourcing.buildcase import CaseBuilder
+from core.projects.casesscan import ppd_analysis, laos_targets, DGEX01, bh_holders_attack, bh_tang
+
+"""
+  worker is now working.
+  0xBe88292826d0d763423195688bdE1AAdCeAf8c25
+"""
 
 if __name__ == '__main__':
-    ma = MistAnalysis()
-    # making the income list
-    # ma.setThreadHoldUSD(100).setUseTo().start_define_incoming_people()
-    # make the chart only
-    bar = 10000
-    bar_small = 100
-    ma.setThreadHoldUSD(bar).setEnableSideNote().startPlot()
+    ppd_analysis()

@@ -1,4 +1,4 @@
-from core.excelchart import ExcelGraphviz
+from core.projects.work_lizfinance import ExcelGraphviz
 
 if __name__ == '__main__':
     ma = ExcelGraphviz()

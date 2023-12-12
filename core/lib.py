@@ -7,7 +7,6 @@ import json
 import os
 import time
 from datetime import datetime
-from pathlib import Path
 from typing import Union
 import signal
 import threading
@@ -20,7 +19,7 @@ import graphviz
 # defi pool reader:: https://github.com/dpneko/pyutil
 from urllib3.exceptions import ReadTimeoutError
 
-from core.okapi import get_apikey
+from core.common.utils import Utils
 
 try:
     import tls_client
@@ -56,6 +55,10 @@ abort("Cannot enlarge memory arrays. Either (1) compile with -s TOTAL_MEMORY=X w
 
 """
 
+
+def get_apikey():
+    ctx = Utils(js_file_name='core/common/okapi.js').read_js_file()
+    return ctx.call('getApiKey')
 
 def multiple_file_types(*patterns):
     return it.chain.from_iterable(glob.iglob(pattern) for pattern in patterns)
@@ -276,7 +279,7 @@ class TronscanAPI:
     @staticmethod
     def getOKLinkFile(account: str):
         request_url1 = "https://www.oklink.com/download/explorer/v1/tron/transactions/download/count"
-        request_url2 = "https://www.oklink.com/download/explorer/v1/tron/transactions/download"
+        request_url2 = "https://www.oklink.com/download/explorer/v1/tron/transactions/download/"
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/114.0',
             "x-apiKey": get_apikey(),

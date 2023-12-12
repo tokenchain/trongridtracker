@@ -1,42 +1,27 @@
 #!/usr/bin/env python3
 # coding: utf-8
-import csv
-import asyncio
 import glob
 import json
 import os
 
-from openpyxl.styles import PatternFill
-
-from .lib import build_bot_tpl
-from .mistapi import MistAcquireDat
+from .builder import build_bot_tpl
+from .mistapi import MistAcquireDat, get_mist_graph_api
 import pandas as pd
 from pandas import DataFrame
 import openpyxl as ox
+from core.common.utils import FolderBase, ReadCombinedFile, find_key
 
-from .utils import folder_paths
 
-
-class MistAnalysis:
+class MistAnalysis(FolderBase):
     """
     https://graphviz.org/doc/info/shapes.html
 
     """
 
-    def __init__(self):
-        folder_paths([
-            "data/mist",
-            "data/mist/cache"
-        ])
-
-        self.folder = "data/mist"
+    def __init__(self, project: str):
+        self.by_project_name(project)
         self.handle_address = ""
-        self.metadata = {
-            "LINK": {},
-            "IDS": {},
-            "USE_NODE": [],
-            "FROM_LIST": [],
-        }
+        self.reset_metadata()
         self.rendered = False
         self.scope = 500
         self.dot = build_bot_tpl(
@@ -49,11 +34,22 @@ class MistAnalysis:
         self.use_to = False
         self.is_independence = False
         self.enable_sidenote = False
-        self.api = MistAcquireDat()
+        self.api = MistAcquireDat(project)
+        self.api.folder = self.mist_folder
+        self.api.inputfolder = self.inputfolder
+        self.project_name = project
 
     def doIndependChart(self):
         self.is_independence = True
         return self
+
+    def reset_metadata(self):
+        self.metadata = {
+            "LINK": {},
+            "IDS": {},
+            "USE_NODE": [],
+            "FROM_LIST": [],
+        }
 
     def setThreadHoldUSD(self, n):
         self.scope = n
@@ -61,9 +57,11 @@ class MistAnalysis:
 
     def setUseFrom(self):
         self.use_from = True
+        self.use_to = False
         return self
 
     def setUseTo(self):
+        self.use_from = False
         self.use_to = True
         return self
 
@@ -74,31 +72,42 @@ class MistAnalysis:
     def startPlot(self):
         file_pattern = "*.json"  # Replace with your specific file name pattern
         # Use glob to search for files with the specified name pattern
-        # search = os.path.join(os.path.dirname(__file__), self.folder, file_pattern)
-        search = os.path.join(self.folder, file_pattern)
+        # search = os.path.join(os.path.dirname(__file__), self.mist_folder, file_pattern)
+        search = os.path.join(self.mist_folder, file_pattern)
         file_list = glob.glob(search)
-        # Loop over each file and perform some operation
-        for file_path in file_list:
-            # file_name = os.path.basename(file_path)
-            self._inside(file_path, self.scope)
-        self.end()
+        if self.is_independence is False:
+            # Loop over each file and perform some operation
+            for file_path in file_list:
+                # file_name = os.path.basename(file_path)
+                self._inside(file_path, self.scope)
+            self.end()
+        else:
+            y = 0
+            for file_x in file_list:
+                self.reset_metadata()
+                self.dot = build_bot_tpl(
+                    "collection",
+                    self.scope
+                )
+                self._inside(file_x, self.scope)
+                self.end_with_k(y)
+                y += 1
 
-    def start_define_incoming_people(self):
+    def start_develop_source_sheet(self, file_name: str):
+        path = os.path.join(self.chart_folder, f"{file_name}.xlsx")
         file_pattern = "*.json"  # Replace with your specific file name pattern
         # Use glob to search for files with the specified name pattern
-        # search = os.path.join(os.path.dirname(__file__), self.folder, file_pattern)
-        search = os.path.join(self.folder, file_pattern)
+        # search = os.path.join(os.path.dirname(__file__), self.mist_folder, file_pattern)
+        search = os.path.join(self.mist_folder, file_pattern)
         file_list = glob.glob(search)
         # Loop over each file and perform some operation
         for file_path in file_list:
             file_name = os.path.basename(file_path)
             self._personal_note(file_path, self.scope)
         # self.end()
-        path = os.path.join("data/charts", "LK-people-list.xlsx")
         self._excel_factory(path)
 
     def _personal_note(self, file, scope):
-
         self._main_address = ""
         with open(file, newline='') as f:
             self.rf = json.loads(f.read())
@@ -180,7 +189,7 @@ class MistAnalysis:
                 if self._main_address == self.getId(v["to"]) and self.use_from:
                     from_id = self.getId(v["from"])
                     address_from = self.metadata["IDS"][from_id]["address"]
-                    print("record -> excel")
+                    # print("record -> excel")
                     self.metadata["FROM_LIST"].append({
                         "info": self.api.overviewdict(address_from),
                         "address": address_from,
@@ -191,7 +200,8 @@ class MistAnalysis:
                 if self._main_address == self.getId(v["from"]) and self.use_to:
                     from_id = self.getId(v["to"])
                     address_from = self.metadata["IDS"][from_id]["address"]
-                    print("record -> excel")
+                    # print("record -> excel")
+
                     self.metadata["FROM_LIST"].append({
                         "info": self.api.overviewdict(address_from),
                         "address": address_from,
@@ -331,8 +341,16 @@ class MistAnalysis:
 
     def end(self):
         self.dot.render(
-            filename=f"LK-rel.{self.scope}",
-            directory='data/charts').replace('\\', '/')
+            filename=f"{self.project_name}.{self.scope}",
+            directory=self.chart_folder).replace('\\', '/')
+
+    def end_with_k(self, k: int):
+        self.dot.render(
+            filename=f"{self.project_name}.{self.scope}.{k}",
+            directory=self.chart_folder).replace('\\', '/')
+
+    def setName(self, name: str):
+        self.project_name = name
 
     def _readDF(self, excel_file: str) -> DataFrame:
         data = pd.read_excel(excel_file)
@@ -345,24 +363,20 @@ class MistAnalysis:
             # 2         3         4       5        6         7     8          9            10
             "address", "start", "end", "income", "outflow", "net", "tx", "spent count", "contribution"
         ]
+        sheet_name = ""
+
+        if self.use_to is True:
+            sheet_name = "income"
+
+        if self.use_from is True:
+            sheet_name = "expense"
 
         try:
             _df = self._readDF(excel_file)
             wb = ox.load_workbook(excel_file)
-            ws = wb["Sheet1"]
-
-            startcol: int = 0
+            ws = wb[sheet_name]
             startrow: int = 0
-            key = ""
-            original_rows = _df.shape[0]
-            original_cols = _df.shape[1]
-            original_cols = len(self._excel_header)
             original_rows = len(self.metadata["FROM_LIST"])
-            pf = PatternFill(
-                patternType='solid',
-                bgColor='ffebe134',
-                fgColor='ff000000'
-            )
             for row in range(0, original_rows):
                 if row >= startrow:
                     rT = row + 2
@@ -380,10 +394,10 @@ class MistAnalysis:
                     ws.cell(row=rT, column=7).value = package_info["tx_count"]
                     ws.cell(row=rT, column=8).value = spent_count
                     ws.cell(row=rT, column=9).value = contribute
-
-                    for ch in range(1, original_cols + 1):
-                        # ws.cell(row=rT, column=ch).fill = pf
-                        pass
+                    print(address)
+                    # for ch in range(1, original_cols + 1):
+                    # ws.cell(row=rT, column=ch).fill = pf
+                    #    pass
 
             """
             for row in range(0, original_rows):  # For each row in the dataframe
@@ -408,3 +422,27 @@ class MistAnalysis:
             pass
 
         return self
+
+    def acquireFromAddress(self, addresses: list):
+        for x in addresses:
+            self.api.save(x)
+
+    def acquireByFile(self, file_name: str):
+        addresses = []
+        path = os.path.join(self.inputfolder, file_name)
+        if os.path.isfile(path) is False:
+            print("the address file is not found under the inputs folder.")
+            exit(2)
+
+        xexe = open(path, "r")
+        print("open file x", file_name)
+        lines = xexe.readlines()
+        xexe.close()
+
+        lines = [h.replace("\n", "") for h in lines]
+        addresses += lines
+
+        for x in addresses:
+            print(x)
+            if x[:2] == "0x":
+                self.api.save(x)

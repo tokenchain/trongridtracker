@@ -6,14 +6,60 @@ import json
 import os
 
 import requests
-from .lib import TronscanAPI
-from .utils import folder_paths
+from core.common.utils import folder_paths, FolderBase
 
 MISTBASE = "https://dashboard.misttrack.io"
+WATCH_COIN = {
+    # "coin": "USDT-TRC20",
+    # "coin": "DAI-Polygon",
+    "coin": "USDT-BEP20",
+}
 
 
-def getMistHeaders():
-    with open("data/mistcookie.txt", "r") as r:
+def enable_USDT_BEP20():
+    WATCH_COIN.update({
+        "coin": "USDT-BEP20"
+    })
+
+
+def enable_BNB():
+    WATCH_COIN.update({
+        "coin": "BNB"
+    })
+
+
+def enable_USDT_ERC20():
+    WATCH_COIN.update({
+        "coin": "USDT-ERC20"
+    })
+
+
+def enable_DAI_POLYGON():
+    WATCH_COIN.update({
+        "coin": "DAI-Polygon"
+    })
+
+
+def enable_TRX_TRON():
+    WATCH_COIN.update({
+        "coin": "TRX"
+    })
+
+
+def enable_USDT_TRC20():
+    WATCH_COIN.update({
+        "coin": "USDT-TRC20"
+    })
+
+
+def enable_USDT_ARB():
+    WATCH_COIN.update({
+        "coin": "USDT-Arbitrum"
+    })
+
+
+def getMistHeaders(token: str = "", address: str = ""):
+    with open("data/mistcookie", "r") as r:
         cookie_content = r.read()
 
     if cookie_content == "":
@@ -23,20 +69,40 @@ def getMistHeaders():
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/114.0'
         }
     cookie_content = cookie_content.replace("\n", "")
-
-    return {
+    basic = {
         'Cookie': cookie_content,
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/114.0'
     }
+
+    if address != "":
+        basic.update({
+            "Referer": f"https://dashboard.misttrack.io/address/{token}/{address}"
+        })
+
+    return basic
 
 
 def get_json_address_overview(address: str) -> dict:
     url = f'{MISTBASE}/api/v1/address_overview'
     try:
-        response = requests.get(url, params={
-            "coin": "USDT-TRC20",
+        data_params = dict()
+        data_params.update(WATCH_COIN)
+        data_params.update({
             "address": address
-        }, headers=getMistHeaders(), timeout=30)
+        })
+        coin = WATCH_COIN["coin"]
+        response = requests.get(
+            url,
+            params=data_params,
+            headers=getMistHeaders(coin, address),
+            timeout=30,
+
+            proxies={
+                'http': 'http://127.0.0.1:7890',
+                'https': 'http://127.0.0.1:7890'
+            }
+
+        )
     except (
             requests.ConnectionError,
             requests.exceptions.ReadTimeout,
@@ -100,18 +166,24 @@ def getPer(j: dict) -> str:
 
 def get_mist_graph_api(address: str, data_params: dict):
     data_params.update({
-        "coin": "USDT-TRC20",
         "address": address
     })
-    url = f'https://dashboard.misttrack.io/api/v1/address_graph_analysis'
+    data_params.update(WATCH_COIN)
+    url = f'{MISTBASE}/api/v1/address_graph_analysis'
     try:
-        print(data_params)
+        coin = WATCH_COIN["coin"]
         response = requests.get(
             url,
             params=data_params,
-            headers=getMistHeaders(),
+            headers=getMistHeaders(coin, address),
             stream=True,
-            timeout=600
+            timeout=600,
+
+            proxies={
+                'http': 'http://127.0.0.1:7890',
+                'https': 'http://127.0.0.1:7890'
+            }
+
         )
     except (
             requests.ConnectionError,
@@ -122,13 +194,14 @@ def get_mist_graph_api(address: str, data_params: dict):
             requests.ReadTimeout,
             ConnectionResetError
     ) as e:
-        print(f"errors or timeout from doing request from {url} ->")
+        print(f"Errors or timeout from doing request from {url}->{e}")
         return get_mist_graph_api(address, data_params)
 
     if response.status_code == 200:
         response.raw.decode_content = True
         j = response.json()
         if "success" in j and j["success"] is False:
+            print("bad result from address graph analysis")
             print(j)
             return ""
         else:
@@ -138,19 +211,24 @@ def get_mist_graph_api(address: str, data_params: dict):
         return ""
 
 
-class MistAcquireDat:
-    def __init__(self):
-        folder_paths([
-            "data/mist",
-            "data/inputs",
-            "data/mist/cache"
-        ])
-        self.folder = "data/mist"
-        self.inputfolder = "data/inputs"
+class MistAcquireDat(FolderBase):
+    def __init__(self, project: str = ""):
+        if project == "":
+            folder_paths([
+                "data/mist",
+                "data/inputs",
+                "data/mist/cache"
+            ])
+            self.mist_folder = "data/mist"
+            self.inputfolder = "data/inputs"
+            self.cache = CacheMistApi("data/mist/cache")
+        else:
+            self.by_project_name(project)
+            self.cache = CacheMistApi(self.mistcachefolder)
         self.tmp = {}
         # -1 incoming, 0 None, 1 outflow
         self.only_flow = 0
-        self.cache = CacheMistApi("data/mist/cache")
+        self.filter_date = None
 
     def scan_addresses(self, file: str):
         path = os.path.join(self.inputfolder, file)
@@ -170,7 +248,7 @@ class MistAcquireDat:
 
     def save(self, address: str):
         filter_list = []
-        if len(self.filter_date) > 0:
+        if self.filter_date is not None and len(self.filter_date) > 0:
             filter_list = f"{self.filter_date[0]} 00:00:00~{self.filter_date[1]} 00:00:00"
 
         data_fs = {
@@ -186,12 +264,20 @@ class MistAcquireDat:
         content = get_mist_graph_api(address, data_fs)
         if content == "":
             return
-        if len(self.filter_date) > 0:
+        if self.filter_date is not None and len(self.filter_date) > 0:
             file_name = f"{address}-timed.json"
         else:
             file_name = f"{address}.json"
-        file = os.path.join(self.folder, file_name)
-        TronscanAPI.writeFile(content, file)
+        _file_save = os.path.join(self.mist_folder, file_name)
+        fo = open(_file_save, "w")
+        fo.write(content)
+        fo.close()
+
+    def getFile(self, address: str) -> str:
+        self.save(address)
+        file_name = f"{address}.json"
+        _file_save = os.path.join(self.mist_folder, file_name)
+        return _file_save
 
     def onlyIncoming(self):
         self.only_flow = -1
@@ -210,7 +296,7 @@ class MistAcquireDat:
 
     def calculateOverview(self, address: str):
         file_ = f"{address}-timed.json"
-        path = os.path.join(self.folder, file_)
+        path = os.path.join(self.mist_folder, file_)
 
         if os.path.isfile(path) is False:
             print(f"The file for {address} with time range is not found.")

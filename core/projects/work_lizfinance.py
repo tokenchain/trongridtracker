@@ -1,25 +1,37 @@
 #!/usr/bin/env python3
 # coding: utf-8
-import csv
-import asyncio
-import glob
-import json
 import os
 from typing import Tuple
-
-from openpyxl.styles import PatternFill
 from .lib import build_bot_tpl
-import pandas as pd
-from pandas import DataFrame
-import openpyxl as ox
-from .utils import ExcelBase, folder_paths
-from .okapi import Cache, CacheAddressRead, AddressIncomeExpenses
+from core.common.utils import ExcelBase, folder_paths, ExportCSV, ReadTokenTxCombined
+from core.common.okapi import Cache, AssembleOKLink
 
 BEP20_USDT = "0x55d398326f99059ff775485246999027b3197955"
+USD_CONTRACT = BEP20_USDT
 BEP20_LIZ = "0xfcb520b47f5601031e0eb316f553a3641ff4b13c"
 BEP20_LIT = "0xB88911bEE18BB8D2168d185B9A42E56704d821F8"
 BEP20_LIB = "0xd91efaae19836f13e2035543576c363d6ed06239"
 BEP20_LIM = "0xc994c96a378d144f475a1e12302acf06eec43c1f"
+"""
+From the above calculations we are based on these factors, that we assume to have the following coins purchased with USDT:
+BEP20_LIZ : 0xfcb520b47f5601031e0eb316f553a3641ff4b13c
+BEP20_LIT : 0xB88911bEE18BB8D2168d185B9A42E56704d821F8
+BEP20_LIB : 0xd91efaae19836f13e2035543576c363d6ed06239
+BEP20_LIM : 0xc994c96a378d144f475a1e12302acf06eec43c1f
+
+Investment interaction from spending USDT with the below pools:
+LIZ_POOL : 0x714d0260317f73805d5babf56c647433105b6c36
+LIZ_POOL2 : 0xA88C636894e7340254E1352439903830b0E492cc
+LIZ_POOL3 : 0xd5be574bfbe7974a2abd8080da2880d652798373
+LIZ_POOL4 : 0x2539f1d49e90c7441eeb618f90702b7a80a9a019
+LIZ_POOL5 : 0xa0c3d93bc79fae77f408d3c65fc74d73ebfc4033
+LIZ_POOL6 : 0xf68850b0bb13975b5dc8f4ce44fa4ffb5597b9b1
+LIZ_POOL7 : 0xfb8c2a4b05ffe28a13166050d2625f687a026363
+LIZ_POOL8 : 0xcb2cbfbdfaef20e89db8855a08929e9dc8a2c6df
+
+The transfer on-chain interaction is filtered by the contract USDT, we are looking into the receiver of the usdt and decide rather the money is recognized as income or expenses.
+
+"""
 # --- now it works
 LIZ_POOL = "0x714d0260317f73805d5babf56c647433105b6c36"
 LIZ_POOL2 = "0xA88C636894e7340254E1352439903830b0E492cc"
@@ -39,104 +51,77 @@ s4 = "0x53cfc9a7"
 s5 = "0xb7fd3001"
 s6 = "0xa4441df5"
 s7 = "0x8dd06adc"
+s8 = "0xe8dbbc5b"
+s9 = "0x12d94235"
+
+# swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline)
+s88 = "0x5c11d795"
+# swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline)
+s85 = "0x38ed1739"
+# swapExactTokensForETH(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline)
+s86 = "0x18cbafe5"
+# transfer(address recipient, uint256 amount)
+s87 = "0xa9059cbb"
 
 coins = [BEP20_LIZ, BEP20_LIT, BEP20_LIB, BEP20_LIM]
 pools = [LIZ_POOL, LIZ_POOL2, LIZ_POOL3, LIZ_POOL4, LIZ_POOL5, LIZ_POOL6, LIZ_POOL7, LIZ_POOL8]
-#
 signatures_call = [s1, s2, s3, s4, s5, s6, s7]
+trade_hash = [s88, s85]
 trade_calls = ["swapExactTokensForTokens", "swapExactTokensForTokensSupportingFeeOnTransferTokens"]
-cex_calls = ["transfer"]
 
 
-class LinaFolder:
-    def __init__(self):
-        folder_paths([
-            "data/tokenscan",
-            "data/tokenscan/cache",
-            "data/inputs"
-        ])
-        self.cache_read = CacheAddressRead("data/tokenscan/cache")
-        self.cache = Cache("data/tokenscan/cache")
-        self.usdt_in = 0
-        self.usdt_out = 0
-        self.usdt_invest = 0
-        self.usdt_cex = 0
-        self.find_usd_output = False
+class ScanFromCombineRead(AssembleOKLink):
+    def __init__(self, f: str):
+        self.readtoken = ReadTokenTxCombined(f"data/excel/{f}")
+        super().__init__()
 
-    def action(self, token_addr: str, chase_address: str):
-        counter = AddressIncomeExpenses(token_addr, chase_address)
-        """
-           [Tx Hash,blockHeight,blockTime(UTC+8),blockTime(UTC),from,to,value,fee,status]
-        """
-        data = self.cache_read.scan().capture_data()
-
+    def captureTransactions(self):
+        # hashes = self.readtoken.get_hashes()
+        data = self.readtoken.get_lines()
         for l in data:
             txdetail = l.split(",")
-            xfrom = txdetail[4].lower()
-            xto = txdetail[5].lower()
-            value = float(txdetail[6])
-            symbol = txdetail[8].lower()
-
-            if symbol == token_addr:
-                if xfrom == chase_address:
-                    counter.expense_hit(xto, value)
-                else:
-                    counter.income_hit(xfrom, value)
+            xfrom = txdetail[2].lower()
+            xto = txdetail[3].lower()
+            hash = txdetail[0]
+            self.cache.cache_transaction_get(hash)
 
 
-        counter.print("LINA")
-
-
-class ScanFolder:
-    def __init__(self):
-        folder_paths([
-            "data/excel",
-            "data/excel/cache",
-            "data/inputs"
-        ])
-        self.cache_read = CacheAddressRead("data/excel/cache")
-        self.cache = Cache("data/excel/cache")
-        self.usdt_in = 0
-        self.usdt_out = 0
-        self.usdt_invest = 0
-        self.usdt_cex = 0
-        self.find_usd_output = False
-
-    def test_transaction(self, hash: str):
-        dat = self.cache.cache_transaction_get(hash)
-
+class ScanFolderOk(AssembleOKLink):
     def action(self):
-        """
-           [Tx Hash,blockHeight,blockTime(UTC+8),blockTime(UTC),from,to,value,fee,status]
-        """
-        data = self.cache_read.scan().capture_data()
+        data = self.cache_read.scan().get_lines()
+        tx_ls = [l.split(",")[0].lower() for l in data]
+        self.cache.fetcher_bundle_hash(tx_ls)
 
-        tx_collection = []
+        tx_contract_interaction = []
         tx_trades = []
         tx_cex = []
 
-        countx = 0
         for l in data:
             txdetail = l.split(",")
-            xfrom = txdetail[4].lower()
+            hx = txdetail[0].lower()
+            details, input_data, section = self.get_section_data(hx)
+            for token in details:
+                pass
+
             xto = txdetail[5].lower()
-            method = txdetail[8].lower()
-            hash_transactions = txdetail[0].lower()
 
-            if self.contract_checks(xto):
-                tx_collection.append(hash_transactions)
+            if self.contract_interaction_check(xto):
+                tx_contract_interaction.append(hx)
                 continue
 
-            if self.method_call_checks(method):
-                tx_trades.append(hash_transactions)
+            if self.tradable_check(input_data):
+                tx_trades.append(hx)
                 continue
 
-            if self.method_call_checks_t1(method):
-                tx_cex.append(hash_transactions)
+            if self.transfer_check(input_data):
+                tx_cex.append(hx)
                 continue
 
-        # print("total pool tx- ", len(tx_collection))
-        for ef in tx_collection:
+        print("A) total tx_contract_interaction tx- ", len(tx_contract_interaction))
+        print("B) total tx_trades tx- ", len(tx_trades))
+        print("C) total tx_cex tx- ", len(tx_cex))
+
+        for ef in tx_contract_interaction:
             self.staking_invest(ef)
 
         for rf in tx_trades:
@@ -145,92 +130,66 @@ class ScanFolder:
         for f in tx_cex:
             self.cexTypes(f)
 
-        print(f"investing USDT {self.usdt_invest}")
-        print(f"transfer to CEX or Others {self.usdt_cex}")
-        print(f"BUY coin {self.usdt_in}")
-        print(f"SOLD coin {self.usdt_out}")
-
-    def get_section_data(self, hash: str) -> Tuple[list, str, dict]:
-        dat = self.cache.cache_transaction_get(hash)
-        if "code" in dat and int(dat["code"]) > 0:
-            print(f"error from code {dat['code']}")
-            return ([], "", {})
-
-        if "data" in dat and len(dat['data']) >= 1:
-            for section in dat['data']:
-                input_data = section["inputData"]
-                if "tokenTransferDetails" not in section:
-                    continue
-                details = section['tokenTransferDetails']
-                return (details, input_data, section)
-
-        return ([], "", {})
+        print(f"1. Investing USDT {self.usdt_invest}")
+        print(f"2. Transfer to CEX or Others {self.usdt_to_cex}")
+        print(f"3. Transfer from other to list {self.usdt_from_other}")
+        print(f"4. BUY coin {self.usdt_in}")
+        print(f"5. SELL coin {self.usdt_out}")
 
     def cexTypes(self, hash: str):
+        """
+        transfer to the cex type
+        """
         details, input_data, section = self.get_section_data(hash)
         for token in details:
-            if token['tokenContractAddress'] == BEP20_USDT:
+            if token['tokenContractAddress'] == USD_CONTRACT:
                 to_address = token['to']
-                usdt_cex_wallet = float(token['amount'])
-                if self.transferCexChecker(input_data, to_address, hash) is True:
-                    self.usdt_cex += usdt_cex_wallet
+                kamount = float(token['amount'])
+                if self.check_address_in_list(to_address) is True:
+                    self.usdt_from_other += kamount
+                else:
+                    self.usdt_to_cex += kamount
 
     def swapTypes(self, hash: str):
         amountliz = 0
         amountusdt = 0
         details, input_data, section = self.get_section_data(hash)
         for token in details:
-            if token['tokenContractAddress'] == BEP20_USDT:
+            if token['tokenContractAddress'] == USD_CONTRACT:
                 amountusdt = float(token['amount'])
 
             if self.contract_coincheck(token['tokenContractAddress']) is True:
                 amountliz = float(token['amount'])
 
         if amountusdt > 0 and amountliz > 0:
-            p1 = input_data.find(BEP20_USDT[2:])
+            p1 = input_data.find(USD_CONTRACT[2:])
             p2 = self.coin_position(input_data)
             # p2 = input_data.find(BEP20_LIZ[2:])
             # print("sold", p1, p2)
             if p1 > p2:
                 # sold for usd
-                self.df_row_second_level_dex2(section, amountliz, amountusdt)
+                # self.df_row_second_level_dex2(section, amountliz, amountusdt)
+                self.usdt_out += amountusdt
             else:
-
-                self.df_row_second_level_dex1(section, amountliz, amountusdt)
+                self.usdt_in += amountusdt
+                # self.df_row_second_level_dex1(section, amountliz, amountusdt)
 
     def staking_invest(self, hash: str):
         amountusdt = 0
         details, input_data, section = self.get_section_data(hash)
         if self.signature_checks(input_data) is True:
             for token in details:
-                if token['tokenContractAddress'] == BEP20_USDT:
-                    if self.contract_checks(token['to']) is True:
+                if token['tokenContractAddress'] == USD_CONTRACT:
+                    if self.contract_interaction_check(token['to']) is True:
                         amountusdt = float(token['amount'])
 
             if amountusdt > 0:
                 # print("staking or invest")
                 self.df_staking_count(section, amountusdt)
 
-    def transferCexChecker(self, method: str, to_address: str, hs: str) -> bool:
-        if method == "transfer" or method[:10] == "0xa9059cbb":
-            return True
-
-            # k1p = self.cache.check_tag(to_address)
-            # print(f"hash in here {hs}")
-            # if k1p is not None and "entityTagList" in k1p:
-            #    tagged = len(k1p["entityTagList"])
-            #    if tagged > 0:
-            #        return True
-
-        return False
-
-    def logicFindOutGetUSDOut(self):
-        self.find_usd_output = True
-        return self
-
-    def method_call_checks_t1(self, method_signature: str) -> bool:
-        for h in cex_calls:
-            if method_signature.lower() == h.lower():
+    def check_address_in_list(self, addr: str) -> bool:
+        for n in self.cache_read.get_wallet_addresses():
+            if n == addr:
                 return True
         return False
 
@@ -240,11 +199,14 @@ class ScanFolder:
                 return True
         return False
 
+    def transfer_check(self, data_input: str) -> bool:
+        return self.sign_checker_0x([s87], data_input)
+
+    def tradable_check(self, data_input: str) -> bool:
+        return self.sign_checker_0x(trade_hash, data_input)
+
     def signature_checks(self, data_input: str) -> bool:
-        for h in signatures_call:
-            if h == data_input[:10]:
-                return True
-        return False
+        return self.sign_checker_0x(signatures_call, data_input)
 
     def contract_coincheck(self, coin_contract: str) -> bool:
         for h in coins:
@@ -252,7 +214,7 @@ class ScanFolder:
                 return True
         return False
 
-    def contract_checks(self, input: str) -> bool:
+    def contract_interaction_check(self, input: str) -> bool:
         for h in pools:
             if input == h.lower():
                 return True
@@ -271,18 +233,6 @@ class ScanFolder:
         sig = dat["inputData"][:10]
         # print(f"STAKE tx {sig} {txid} block height {bh}->  {tokenB}")
         self.usdt_invest += tokenB
-
-    def df_row_second_level_dex1(self, dat: dict, tokenA: float, tokenB: float):
-        txid = dat["txid"]
-        bh = dat["height"]
-        # print(f"trade tx {txid} blockheight {bh}-> {tokenA}, {tokenB}")
-        self.usdt_in += tokenB
-
-    def df_row_second_level_dex2(self, dat: dict, tokenA: float, tokenB: float):
-        txid = dat["txid"]
-        bh = dat["height"]
-        # print(f"trade tx {txid} blockheight {bh}-> {tokenA}, {tokenB}")
-        self.usdt_out += tokenB
 
 
 class ExcelGraphviz(ExcelBase):

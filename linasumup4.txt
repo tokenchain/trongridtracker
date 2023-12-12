@@ -1,0 +1,1150 @@
+scan complete
+data from 0x672472cb267c42c8f92b910bfb8567dfc4e65e26
+total expense: 15390954.14 LINA
+total income: 19002954.14 LINA
+scan complete
+data from 0x39514014bb846bbac2331968752ffe28112c5394
+total expense: 3049411.1599999997 LINA
+total income: 2608954.14 LINA
+
+
+data from 0xeb979dc75632ff4895292e989e7dabb7d7c7e9af
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0xeb97914d2fbf9af3b9ccfd672ccb7fda8487e9af
+total expense: 829865.5700000001 LINA
+total income: 1222288.1300000001 LINA
+data from 0x177888a711aac0004492b1adda5c8d888839530f
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0x1778add2438419ed9f9eedbfccc75b8cc879530f
+total expense: 934170.9000000001 LINA
+total income: 734306.6799999999 LINA
+data from 0xff9d5bd59f86e42d7cc2e04da54ea1d2c4324fce
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0x5e0cfea11bd18959a6fd687bfa2d0a4d3f543644
+total expense: 299335.1981586673 LINA
+total income: 358408.6881586673 LINA
+data from 0xff9cf43b17335becee3f0c204e943cc46b924fce
+total expense: 1082354.15 LINA
+total income: 1193391.19 LINA
+data from 0xf6a6be568b6a3db1a4b767331f2200e226ca6c7e
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0xf6abc1746729c4875885180ace03bb9f510a6c7e
+total expense: 265748.53 LINA
+total income: 265748.94 LINA
+data from 0x560a065423df39d8f6e429a4310f04a7a55eda59
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0x6300c87b5a97ff3a8c4031253af198a23b7dda5f
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0x5604220ab0e202f6d85fa9098165538c1ededa59
+total expense: 360754.69 LINA
+total income: 438542.83999999997 LINA
+data from 0x630d072820e375957748823e5e0d08d51c8dda5f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x177f7dc94ad242531decede84e396e64e309530f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x5e082e959541101d4af159aac225cefe8e543644
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0xff98b62fb97aaf70c67bbefbf2f52ddf61a24fce
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0xfbd243ab27b37eaabee7c3e3eb2bb4ebb5f3b7ee
+total expense: 14172.759999999998 LINA
+total income: 0 LINA
+data from 0xebd04d1901ea335b35b9f59b5babef5c9713491e
+total expense: 0 LINA
+total income: 0.0 LINA
+data from 0x18286a2c7251d48fddb02a9291cdf624272be802
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xebdd3e549b32bf24428cd5a0827e1c432f03491e
+total expense: 0 LINA
+total income: 136823.0 LINA
+data from 0x1828cc51dd4c0bedb08e881ff7804541cb5be802
+total expense: 89912.48 LINA
+total income: 85500.0 LINA
+data from 0x2da53179c6a98fc777093a3b84644fbab4b3f88b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x2dacf336f70dd0be1bafed2b2d5407d40723f88b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x66c5e955d506188f42a53f3378debba7a7226224
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x66c4f56738ef0ca2ff8cb2cb578821d37e726224
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb8c20693a7b90f8a9bf0af70eeb5c880caa6e9b5
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb8c25f3389100a0de361697a0d8fae276e46e9b5
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x10edd428ca865e898c94db9a2c63c93d3a62ec68
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc1f796297cec5da8c7cdd583cd7e95dfae3eda6c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc1fd84fa7b3fd679aed7421507338d51542eda6c
+total expense: 6820.800000000001 LINA
+total income: 0 LINA
+data from 0x07adac88139ed74f4328361c38cba491cddd7357
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x07a2ef5999735385f95333a66c9054598aed7357
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9e024a46a7c941616933822da30cfd9eca8f0a0b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1efda3f6f7591058789a1e9a010b5df42c9ce6bd
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1ef1929c01eada9116846cc6532486a5031ce6bd
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9e09da52c02228580cd21c348d7a6acfea5f0a0b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x52237076774b0cd80eeffc9d6c8f0fc797870250
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x5f47af871a77140cbe08ce303e4918feea8c3cd7
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x5f4f387caa130ea2988d42139b77dec275dc3cd7
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1ef166f2c60f8e60c164cc15da335cb85bfce6bd
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x776f907a00775a1f179098e0ef724f4ac0c99101
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x776834ed2fc6e5ef59727561df6bf2f6de799101
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1ef6f8cfc96fea11357f17bcac0a9b991acce6bd
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x66c1c8747e583074b7f6fcca4c2efc3da1726224
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x52286c535a4d2f8d979dcfa96f5d169ead870250
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x52b41348b244db91ecad54c5901b7bc72efccff0
+total expense: 86816.534 LINA
+total income: 0 LINA
+data from 0x07a9ddcde6c58aac5709a0b19c5b092852fd7357
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x6080ae517e7da56506fe28fa6830eab0a6e8c0bf
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x608a2aff8341d7845d036a6133018dc90f08c0bf
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x52b32432b9605bcebc6f18439cbf5b17687ccff0
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x07ae20c25bd565da1d80553794cf0ef281ad7357
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x5f40c56ff4ecb92bec322e595d700011defc3cd7
+total expense: 0 LINA
+total income: 0 LINA
+======================================
+data from the above EXPENSE side
+total expense: 7019362.772158668 LINA
+total income: 7043963.608158668 LINA
+scan complete
+data from 0x1ecfb6f7901397c5265cde81c9afbefd0edcc2ec
+total expense: 2000.0 LINA
+total income: 2000.7 LINA
+data from 0x909b70173fa03bcd6a4f808a2969b40cbd27b259
+total expense: 4000.0 LINA
+total income: 5369.0072 LINA
+data from 0xc0e7bccda5cd1c981bea622305351c9e88efb77b
+total expense: 2000.0 LINA
+total income: 3299.8 LINA
+data from 0x632e3acd6cc030aefdb4ed865aa4d99da081e10b
+total expense: 278477.54376324627 LINA
+total income: 310076.34376324626 LINA
+data from 0x314411b41a8dfca69e9ebf1f6938d6ad00e90145
+total expense: 4000.0 LINA
+total income: 6559.4304 LINA
+data from 0xc9a859fab993e4d9af304fdcc54a30a59afe7d99
+total expense: 2000.0 LINA
+total income: 2000.0 LINA
+data from 0xa681e3c8f1e20fb17a5a3918a483bc60844fd607
+total expense: 2000.0 LINA
+total income: 3547.14 LINA
+data from 0x4ebd7e8629d7ffe582db5c86b09c965f385bdeeb
+total expense: 1260141.929650809 LINA
+total income: 1260141.9296508092 LINA
+data from 0xad93f3ca29d1f297833f98b61a39517a72f90b05
+total expense: 2000.0 LINA
+total income: 2000.7 LINA
+data from 0x009be66297af36097e9217cb5f03d71f693975b3
+total expense: 4031.0640000000003 LINA
+total income: 4031.064 LINA
+data from 0x32043d35da8c1528fa280a67b1752102950b7121
+total expense: 2000.0 LINA
+total income: 2586.04 LINA
+data from 0x841ccee665de1e1251297d41e1fa166be51fb89c
+total expense: 70000.0 LINA
+total income: 70165.48 LINA
+data from 0xe72c924d8becdbe3556a82fa50e62e8b540444a7
+total expense: 2000.0 LINA
+total income: 2771.6981038747917 LINA
+data from 0x5ac377bd7cf491ae985680e4e25557ecaa8f7d27
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1cfa00a1c572e5216a7c287288639aa708ad6924
+total expense: 18000.0 LINA
+total income: 0 LINA
+data from 0xb35e60ef0f993310741ddf03863fbf5fdfa3900d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x010b91f1ae347c7684f092e6a951b4a574850cab
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x5ff0c23e9493618c5636c14e46d05b4eb46271e4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x18ddb2db66b8556b9ceea49cc0b85d54790ef581
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x8ff2cd6494e4ab5df1a9f2b7361601fc8a949a4b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa814be4d3df3c195c0c358bfb7f05f1722f49eef
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1d56902d45ce50b3b0f95ca2bd45a7a157a9fe40
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x54cf23939315a57938d2b7c4a961424ce3d799e5
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x11d131d929161080e8a2e72fe5d49718b333658b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xaa8c0c29bee284204d80b9ff3f6c1e070c02b443
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xfbc29bebbccdd64642e0484087242d66bb5f9754
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb8c11217c58f9eee153203c6f9206881f71bd303
+total expense: 0 LINA
+total income: 16356.435200000002 LINA
+data from 0x1037a4904b5f8d8115b2f5400f1eb24f9b3a4d9d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x501bd3ae7e847cde8b91d9b24778bc85e1d1a375
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x8d734476b45e65f4ef1f91c8f25c3e00d3a530ed
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4ee48431c39355fa02f99d57678386221780c963
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4b9240db80e3f98d000a4a3299c138270b9adcfb
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa15432566dabed95322ee3c6667cb815e6faba89
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa89ba4ec600d5da5d947c0303106f9644e1f03ef
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1edcc3c11347caaa3b5e3c79af648d34e69b3415
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x96b360e09bc26f8bbfd28f1e9bcf4c136e65d5a4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x2ec4fd9f7ed9163e7c4aaed313c5e76389c1d043
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x449d19e75687c5e6e08d27a3e359701dd9ebe18d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa1a25f395f1983014b1a590aa28f3f31aa75ed38
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x7170537f92b494bb39e08bf2b9b8fc73a9c72a86
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf91d0a9603a0c6c3d3ccce867d1ce00a1251a12b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xac1ea2304f704f862f994f81f6460be1b02071b7
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb9784e74c0f9b59b909ab119909228a5dd944dbf
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x58af681af7d71047b645b9a4e8617990e61bdb84
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xef1910d19ee95bd147495493c732cab631f6050a
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4e92c1c837e3f83063f276508c96675282c90dd1
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x603eec096fc1340a1a9bdd8d592c68128eff27f0
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x3be6fb05e320b7cedaee9c9a8b2364cfe308965b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xcf364ea34e19e7b0e24a0d34f306de84785f1b7c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9f27ab6cfd8ce67427a164d59b31ec59676dd30d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa71458ad310355febb599d1c0e772a5cd0487f52
+total expense: 14000.0 LINA
+total income: 0 LINA
+data from 0x82f2fa85eaf287824f7e01aa66dca72efe26e9e3
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x033088650d635055f21a3e6c07ba95dc20d72981
+total expense: 6000.0 LINA
+total income: 0 LINA
+data from 0xad0ffa98dba64fd4aac79c3d341729b05f78fd79
+total expense: 10000.0 LINA
+total income: 0 LINA
+data from 0x96b3fc688ba2e5e7a939a08b7023f5a1ef5feeae
+total expense: 10000.0 LINA
+total income: 2031.064 LINA
+data from 0xbd2f7cc251639cfb7a801954ac7f11e276d81c1a
+total expense: 14000.0 LINA
+total income: 0 LINA
+data from 0x3fd4b9ca4e19ea544b835f8a1e142741e7440414
+total expense: 14000.0 LINA
+total income: 0 LINA
+data from 0x75ebcbc2d32bbe6c5418355d59f5f0dba1a812a8
+total expense: 8000.0 LINA
+total income: 0 LINA
+data from 0x3d35aec081abc37cf08527633a521d42da0ff40b
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x67f425f6c9ab817c92242509d989f08d710e0bea
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd0f8e757cf216bf8387be4b089531b24c1f30033
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x08e41a4ff62aed52d89e2378a820b6028c6b54de
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9f343d504bbeea4b551dd6a6b824f48bf6bc3524
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x6415a821915f0fd93a80bf44570c695d9d4c750c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xe80ae98744aedff72f2a18dce8abb15b2a1bfc6b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc70226f0eb79c6a0cd112619d20cc2ced475748c
+total expense: 8016.0 LINA
+total income: 0 LINA
+data from 0x18a723f257e9bcfa33fef3ae1b62a205d60e2649
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x85591c3e33ad3091507045b74493d0273fc507e2
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdebc5a7f286078110e8a16300e2d9951a4b9cd17
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x41e3c0d099c0681527ca3e2db0d39e17ea0cb5fa
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xfa7a9ed62ef0eda63b391c142bba0338624bb098
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9d155bf09279625c2b9e40fadc07cfd6c7d6bf8f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x7f9cc97ca03b83dbe07dd136948b1cb2fc8e3b2f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x53b41255266cbb10092082496bcec650f8326e67
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xaf0886a86dc55bada7b86d40fd2310dc52747cd0
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xbf9a18b693eb223fe3ee07666babecb65626ec87
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x083068b7e26f78dd93cbb99865845969d36adb96
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xcbadfedcaca3415df0df84d30ff81693c467f755
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x23e12ecd4ea84c1d7864a33cc8ad8095925213a4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1b09f57dec1d326499c5e73552baf0ee1645628e
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x6194ad0148160439fdfa01896cc1f6f6ee23082c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xef36c11693a72dadcc0d052735023dc99e93f45e
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x13ef7d451783dd504831f6a4b12989c2b79d1a01
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x8e2c9d840cb584c8473a540d003bd502c9729ef7
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x459e259805e829636e5ac0c8ee5707e957ae726c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdd0584f0111d3ea0cd40bf300e39f0223607a7cb
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa656e8e4030d8befeb27269a887dc3f153516de4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9b90b0f62b052f484785d0b6a6fda961e1c7a300
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9587b59889be9f9c78aebf977887a54a13666591
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc813315de63124f2dbde5a5350ee9f76c34203bd
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xe3a9aea2718e32d3c08d33a9d8332078417cb83a
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x17b5bd17f771ff5e0057c9bebf733e9b9a929060
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd88fee7a1bddb456052ead194381e896569b441d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xe45d3c21aecb06b118afd2c2fdf1851a2ec76951
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x3cd961972e8dc53ba8faae3744aa04b336c70a32
+total expense: 0 LINA
+total income: 1914.9283498388436 LINA
+data from 0x2479edc9c6dbe7ee9781871ab8eaf794c8ffb31d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc5b36fa3c1b6292e1346bcbf2826c8e16f9127b3
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xe3bbc6b7e0b4484f2d7f1ac8bd7e8c31212af5fd
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc6830ebaa51f09bed4c8637c685aefac4e0647ae
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf9e3f19fb34d5fbf5c47f39d31be46e8db58afdf
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x6c25e4a883eeab9b4ff0e9fefafeedaf907dfbc6
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x49e4358413c4bfc38eafcd0bdebe46e2df888105
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x2a6c934f98fa346bca9dc1870ef923f890ccba95
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x770f7692ec5c356102e89caa1e3c67d9c1773a09
+total expense: 1451.4192 LINA
+total income: 0 LINA
+data from 0x5f09c899a122f10ef47e832af0ad0188e65e3065
+total expense: 80.0 LINA
+total income: 80.0 LINA
+data from 0x776834ed2fc6e5ef59727561df6bf2f6de799101
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb5a5d1cc621bd189ad207470db1aee0bf784ccb8
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x276228f3ad20d9dfcf809fd9b70dd22f196b45ac
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb121e7e963e4206f5d282b731ced0695051fb532
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x0577874e2ba2600cd0003c35590e9734f1f5287c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x81191f6ec7038db683ec35b54efdb11ddc56ba5d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1a4e4736f0d79a3d0d49c2a1e663bfc49454dd78
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xba31891485f9f561eddc31089afd3075bb07de64
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x2aba55f25486ec462f00b1fa18bc836d8b042518
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xffe82eab5322c9e94926ab5b59123d3582f809b4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc4df0260c3b741bf488af961cc239a0fa71da530
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9b188d75ed421d1f6d9a1720beef1c8c0be14ce6
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb0eb713d93a586e1d42e63ed3c16398a2279dc05
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x26b12dcae5928020676e761908838e573c407df1
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xff06cb44bd1a280fa8e4b470aedec0dab0aebc6d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4dee8bca019c0523c389fcf3f858dfa1abc2a809
+total expense: 6000.0 LINA
+total income: 1176.0 LINA
+data from 0x3194e86319a37114eab985fc422f24ce1c41fc00
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xcd102ac2da7e525b6dc8dc6a4733929054acb8c2
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa551a5215595eeb6bd5dab9518630f0ecfb56660
+total expense: 97646.56996 LINA
+total income: 97646.56996 LINA
+data from 0xcf5ca0c22e302d28542538a95162736926e07319
+total expense: 5830.4601153397525 LINA
+total income: 5830.4601153397525 LINA
+data from 0x8e1bd4f23b644f55f6d867d92fc93f26606f56a5
+total expense: 2356.0 LINA
+total income: 3027.432 LINA
+data from 0x5767f054d60817ca49f8538fd4dce7b24a949b1f
+total expense: 2546551.6078 LINA
+total income: 3126751.607799998 LINA
+data from 0x04a2916f215714a0c1b09693972655bee92c1e22
+total expense: 28395.271149838845 LINA
+total income: 28395.271149838845 LINA
+data from 0x13ce67d37f67d25778b5310190995c9039244477
+total expense: 4000.0 LINA
+total income: 4000.0 LINA
+data from 0x23076325c1aef4950c4e078895b43a60249a2767
+total expense: 2000.0 LINA
+total income: 2000.0 LINA
+data from 0x9d1d19fa0489a328b7eed64395f16a68e1f4085c
+total expense: 2000.0 LINA
+total income: 2000.0 LINA
+data from 0xf7b40494ce649aa1f4bbd8a7324a02451c97f67a
+total expense: 38000.0 LINA
+total income: 38002.600000000006 LINA
+data from 0xe66f0762d07684605cc6dc261e3e79d6f99db54b
+total expense: 4000.0 LINA
+total income: 4000.0 LINA
+data from 0x7bbb971eda92f8347db441a5ddabcafdbf2ca02b
+total expense: 20000.0 LINA
+total income: 16000.0 LINA
+data from 0x0b587e825029adf5def0d303bdbe24ca7e185a26
+total expense: 12000.0 LINA
+total income: 16000.0 LINA
+data from 0x8a78c4cb1b94e63ce7443486e3cd65f4baac9c7d
+total expense: 4000.0 LINA
+total income: 4000.0 LINA
+data from 0xfba523ce8e103555fa73b2b2d7e5299ad6850573
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xcf66e1b6dfadfb29f44455ca6abf4d9f368d8235
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x274b96e0f4160301922b3e5e64010a0077bff4b8
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4e859dfc1939aa6b30438f7e0b693f6073ec4ca6
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdced0ec009a81d2b33ab47039c4102ed2a8d6fd6
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x5224f27d975849343e90ddcad9954c58e45f85c1
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x970a27fea51ef0aef5fb06f8c1bd00c8a140dea9
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x61f841c40a890173be5c8e21a24d96369adda204
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdd2afcc4a6dc7559840d120ad160470baf07fde5
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x8301a370abf5bbbede40e3f3b49068ff804baa08
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd90506235b384300dd320f824cab4a8ab43b9dc5
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1075a273ec8c8fa6eeedbd482edfe4d2bee585d7
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa8db6869d03d71fddb8400bfb8886d4ad11ecb9c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x6268f140e8a5938258e1b4f7cfb1d52d2a6570da
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x59ed4a30fc48e3e8ed9d5a5d888fe4a91fb0055a
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xeabbad35b77d4adebc0b491f6ade3c4d439dc39f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x08d380932ed97c929e57e73432bd351962e6caad
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xce710e76c70ac7ba4b2a1006574d881c3fe9a04b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdb6802670d88f225a3f51e4b3835227b9777978e
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc0d68a6883acc95f03055d2d65dea6f4294172f5
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4804940bd3d7974f1dd88151e56c933886a1b014
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x24a6509f9a74c704c8014421448543c1963ae5f8
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4a2d29c565d0105dcec70f34edbed893ad67d1e4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x14a8a34199af812d3a7c903ec447d183af9f689d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdac475eff0b280d2af28552d56a626124b396c4d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x768f239ff6f617c47800ac5f687ab35d24e79e5f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd1c4508923668f38aa4168404a78a6e024cda35a
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x90c8a6ab7afbbe91b95a4f31c319be9231fbb047
+total expense: 2002.0 LINA
+total income: 0 LINA
+data from 0xb84774ee746e8386e13a13308bcc442a060973a9
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc53b6356b2433c24ba3420e3965dc6061df40ac7
+total expense: 0 LINA
+total income: 30600.0 LINA
+data from 0xe3b60c10c246a11117079b290ee9e87cf5b65d53
+total expense: 0 LINA
+total income: 4080.0 LINA
+data from 0x66d202a8b688c3ba95607e523b8a1d061b0a7fa3
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb0a5771f4c6e5a6a24a2f36169c5231f9d34c93f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x38a4d6a94227f3ea4a3953d8cb52cd6378259d11
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x93c07b32a4df33973c8e3f2d00005f1cbe41578b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd1868250723a2425bacbe8283defef4c09c0da50
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf6adf370789b491d1f8f75d6b0cc1c172b4a6872
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x71c2b1314ff35bc63663325c5dbe9107e388893c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1409cc09f4b0513fae51c7353073e0ec618c2964
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4621da0b5ff059e685b23b471cd41bc2d8d699d4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x5a782756bcfb17847a4dfa8696140adf1c826ce5
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x7d42103143c9749fe0b82f5af815723dd7c106d3
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa565f962eb60ac7a5ffa0ed36411acfb26d69f98
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xfeff92e0660abdb238205daa4cba372c9554aa69
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x167195598aedcd0604eb81681adc0f9f2717254d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf9141bbfe0a68ecd518769cde825e8cf9178d1f0
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb08f463fc240a1be7d89e24c0d60d352de1e9d40
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd1f819b38ef529ab88e60efb6b53dc0c326af872
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x451d4c118a89e959dc8ec85961b54899a2f400cd
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x3d8cb69c09e45ca10409fab9ff6af638a168f44e
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdeeac39ff1b91c505c347fdcdcff019efb6ca272
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x97351295ef4361c3b1773130dc421c4857762d06
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xe194c6972f6bd46c0228b442addf106b852a1b9a
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf1f925219e80f1d4d8213b1f1bbe589722023fce
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa087222ee41bbb2a2b0ae52f9bc74ecadc063668
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa6444e1c45dbb929e98e23ab130ea3e2307937e3
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf7377cf60e8b0066d2e9526638ed19ea0e0a2ced
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xbd8af80ebf4f95ee126f475cf57e3b56a57ea29e
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb47869bf3f1e4b0f839dd3e82fd05d955fa5b338
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb40d9d0f5079871f1b6ca64bb3dfb97b367948e4
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xbc5037e5d7235a3da912b9878f9d0a9301cfa71b
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x042248917e47cc5c07cf83fe36888a8956ca3c02
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa7aaea7aec6d45b9676b312d615d3cc69d48e015
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x8afc0d3d3acd6e7df966b9884ef1b096dd457508
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xb8dc8f0c1860cca4ab1144706b8fb294cbdf2d7b
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x1eb43fdaa3054c94803547ccc92dbf717d1fff18
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xaa49736b89a3ed28b2e1ce7fc2a2f1021d3b5f74
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xe1a7c4db752c7b7f42c2aaccdcca996a9c4e3258
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd6f29b45896a8b5e2c80db0caf7dec89b498f4da
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xaae3c605e517ac93c20d26e93f62c160cedaff29
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x80eeaed82c027a36c820e7d7454e33a64ff8bf0d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xeb00d823e29db8137882f5c794243c3593baae89
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xde5ad82e7b3d79444c208a7088ac9010e2b39a83
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdd932d66e95bc3137b31020e6e1f1bd94cb75728
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4e77a4b3e7e11030e07ff0eaa633e10d56cccd96
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4160742cbd9de82ab9c92a666e6cf181a786298c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x02914754c61eb89ed9b59f133b47a4ba3eda659b
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x21205ab2f8143d622749ec8cde6684affbd61a03
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xc901e96000fa1cff8be30a7dcb191cacf6f7c1f2
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa911b94401010d1c2df29d1bbbc3d7eea69a9461
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x31afa47a672cbcb63ee50be4958c7e40f2fdc23e
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x91b2457841bb33addec1d6b8fb32802f2243b157
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xfc4df319e830ecd8ff110e4cd3ea701f83537c07
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x338c50b6050745c35318e3813dffbbd050e380f3
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x7aff01ab854e13be8cc4bac9a7bd5bbad9f314b8
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xfb4608b7d341c6dade083f94b0a5749bc3e2a1bf
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd1268c7e94cb65a74b066766c42b27e5633c9920
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x1f4ac83b03937eb98d266e6e5d990f968a3c3b87
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x0e05908bce359f6d7ace4e26458a5fd2ac2b60a1
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa76375cd5a6622ddfc750dba89a0389122469f25
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xa84362f06a385a6d717a239e74abc922985b1e4d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x4ffc55c942b982e3e08f16baccd15af5ed70b222
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xaa8a8a3f8d39327b844a7957a5b32d7501f5ae1a
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xdd41d1b9a0871c8f261410f85158c3155650387d
+total expense: 16000.0 LINA
+total income: 0 LINA
+data from 0xf468fc43e2fba0519b5eb4dd0cf5423a5d9e34b6
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x10c578ad1ccd2fabfca91f74275c99d8f5492ba8
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x3e213159c858f53af4e37be28bbfada31df41df0
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x104e9f3ee60aab9e2e564c1a969d87ba4ff178b5
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xba0a8ecf1bf45cf234ffe661ffe5cb357296f385
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x72594a80f906566baf11325b210fd1d33e9c534f
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf96eb3613f428a511022832261581c6e025d885c
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xec78add724598cd02a5c0ce555613fdb5e3470a2
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x786bb70ce0bb55349ab41a96ffd48ec090d69086
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x942bd0102e35cfeaae6a1df9a2d7fde73d9a8ae2
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x9f26a77d47b0e07a4c68f58159f3ad74dcb3dca7
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xe95662d34f51acbe8a497874f9f182ed0e48b7d1
+total expense: 0 LINA
+total income: 37242.7 LINA
+data from 0xab2a5bb560d93e6945239b5bd5224838be60cb92
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x8d5592503c391744eca0960cc3911beb4a349652
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xd61603c97a727a1dcf5e5432aa9449949dedc294
+total expense: 0 LINA
+total income: 0 LINA
+data from 0xf5298112c1234a654ac219dcb9f92bb7d7e93513
+total expense: 0 LINA
+total income: 12822.563868334275 LINA
+data from 0xfd5bbd50160551ef9a7f7db82c9994885be5d713
+total expense: 75242.7 LINA
+total income: 75242.7 LINA
+data from 0x6e4747ac0cf09902d3ccb5ca3c6d1ae29f85b2ee
+total expense: 401688.1284694283 LINA
+total income: 401705.3162916363 LINA
+data from 0x5dabcae02c5ab138d60ddd2cbed70e2a2be8a1ca
+total expense: 43461.71654 LINA
+total income: 43461.716539999994 LINA
+data from 0x5a62458484514edd0000e98fc73f838ac47f1d1f
+total expense: 2571406.329174656 LINA
+total income: 2571406.329174656 LINA
+data from 0x33949d21e10b5f00598cf65e811a6f2c949045dc
+total expense: 1268596.7959633474 LINA
+total income: 1273110.6759633473 LINA
+data from 0xfb7e6dd222b5292331ad5847308c1e61c3d3f450
+total expense: 2000.0 LINA
+total income: 4514.68 LINA
+data from 0xe195d00cd13130fec24513de2d592006d1097c94
+total expense: 14822.563868334273 LINA
+total income: 14822.563868334277 LINA
+data from 0xb204a1bb91b46e05246eb001532406327574cac5
+total expense: 348816.0 LINA
+total income: 436149.26 LINA
+data from 0x64abda73a027e591cec45a735345f1f224ef8267
+total expense: 2399380.27188 LINA
+total income: 1829952.43188 LINA
+data from 0x8e9145059181e128fa70098d11ce6cfcf767d36d
+total expense: 73229.7712 LINA
+total income: 75407.33119999999 LINA
+data from 0x66a5a79820c7d126e451b26a2853a364209d5532
+total expense: 31316.503999999997 LINA
+total income: 43007.74720000001 LINA
+data from 0x397240d1bd09db0df5879658a90f011e5d58ea14
+total expense: 2417.48 LINA
+total income: 3414.9632 LINA
+data from 0xcc011f969c076b4d3ea9204caa88c8e7b45fc59c
+total expense: 2417.088 LINA
+total income: 4449.608 LINA
+data from 0x3f51f5cde1e4176343a9e3fe40ad879796fdfae8
+total expense: 1960.0 LINA
+total income: 0 LINA
+data from 0x05278b7cbe84bd63f59f473d367043f11553ad03
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x03e82b7c6a91ba73e8115bf2c04841a4c60b7d02
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x9521cd92a06988f0304cc7a45bdb22c594cf0370
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x131acfc0dee0953996646e7512e3e80efe27d028
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x1b309f3a2441fe405c0acb9a21f4306abdeb495d
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x07a2ef5999735385f95333a66c9054598aed7357
+total expense: 0 LINA
+total income: 0 LINA
+data from 0x39514014bb846bbac2331968752ffe28112c5394
+total expense: 6098822.319999999 LINA
+total income: 5217908.28 LINA
+data from 0x10d5d76a049f699ddad83b76d3863a52c50fa451
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xf9bdd59356bb7469747f9d44007e6ad82c4a8986
+total expense: 10000.0 LINA
+total income: 0 LINA
+data from 0x947891f8ee55b2db9ba84d5ad3e172c8cef12386
+total expense: 4000.0 LINA
+total income: 0 LINA
+data from 0xfd41abaf8eda4952131076bf0684eb8381de35ac
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xec3dc981948a789e8d420890eed4186f5b45ce49
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x551a42ad704700636ef214584c33fbea89e11128
+total expense: 26000.0 LINA
+total income: 0 LINA
+data from 0xd0531212672eba9d904ddafe4006feb58b24050b
+total expense: 10000.0 LINA
+total income: 0 LINA
+data from 0x840f0eb6281d3abc1aaaff17f136170c10a1c784
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xfb9119c7d146d2641b3b942e916d0db4e7ab0537
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x7c9ff53e079d3b16eb324b3fd5d77436ad858908
+total expense: 6000.0 LINA
+total income: 0 LINA
+data from 0x42eb11da600e0bc5f7a8a1fa3635d35ac51a8908
+total expense: 4000.0 LINA
+total income: 0 LINA
+data from 0x5cf78b86e9839d2bc869e77aaa5e3c06a0a23fcf
+total expense: 4000.0 LINA
+total income: 0 LINA
+data from 0x576c030ce6d61c2ae4e011e6ec33ec1f09cc6431
+total expense: 10000.0 LINA
+total income: 0 LINA
+data from 0xa31df2a3297fe943c0e6dd549a5ed40c95df39ed
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x53933d07d899d002900f90668aa5018a69a80413
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xb9768be0fb87695c4e03ca9d5f84f73cfe3cc0b4
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x5e2cae9a32801ab79dba9dd145dbba862869fe3a
+total expense: 14000.0 LINA
+total income: 0 LINA
+data from 0xa60e0173748fbbbb325bc18024d252b11c8579d7
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x4d0f2339bd11bca084f3fa4fb6dc9aefa231a76a
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x8f74c5c9607ddc318b94b6faaf6bdff66b314cba
+total expense: 22611.52 LINA
+total income: 12081.64 LINA
+data from 0x7c82250e63994af489400ec0100bfe6fe8e74ceb
+total expense: 612000.0 LINA
+total income: 0 LINA
+data from 0xce88178ed548742c3120aff861f3e5bf69a70269
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x7b45c0ed959ec3ec60630824b75ab642924063a4
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x65aace4a9bdd5adf382b9198b72124ce600fe14b
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xe3215401d42ac99ceba6678c9f217ab2ca329c4a
+total expense: 4000.0 LINA
+total income: 0 LINA
+data from 0x3aa513976093fc3897d7b486b3a9838a5c6bf8ea
+total expense: 58000.0 LINA
+total income: 0 LINA
+data from 0x6853225e4ae6669ad18c945a011a5c6b3c306c77
+total expense: 86000.0 LINA
+total income: 0 LINA
+data from 0xccbeac783cf7633e6e1e2cd35bb8183e99e85a46
+total expense: 12000.0 LINA
+total income: 0 LINA
+data from 0x7c51e8c2e8da698fb9da95f172b3a35cad32ce65
+total expense: 8000.0 LINA
+total income: 0 LINA
+data from 0xa6862037bafb60e0b946d9cb7c1ffec79cf9a965
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xb6de2eb3fbf57afdd5594f0297e6e7c1e8816e1b
+total expense: 16000.0 LINA
+total income: 28919.8 LINA
+data from 0x8df456dfd10ee01ea3fe207bad0b760c3708a358
+total expense: 22000.0 LINA
+total income: 11276.775251645387 LINA
+data from 0x85c425a2fd274495b884ef515eeaf6aa2031393b
+total expense: 16000.0 LINA
+total income: 0 LINA
+data from 0x5c0703d3adedadb5d24e4e65858c29c94298274b
+total expense: 4000.0 LINA
+total income: 0 LINA
+data from 0x582238abf703409fc28ed29e096bf8859dedd653
+total expense: 8000.0 LINA
+total income: 0 LINA
+data from 0xe952a6dee93d82abb72093645b64014ed8c1262b
+total expense: 8000.0 LINA
+total income: 0 LINA
+data from 0x5d00d0bcaf1346f571a63ffbb70dfa0d5ce290c9
+total expense: 600000.0 LINA
+total income: 0 LINA
+data from 0x4c07f4eae4b876af9282edb6fee79a56d0db141c
+total expense: 14000.0 LINA
+total income: 0 LINA
+data from 0xe39a4fc1018feaf25bd28f28b1cf8a4bffa997fd
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x75d663169039d041069ba821d102ed461df3416f
+total expense: 10000.0 LINA
+total income: 0 LINA
+data from 0x3408d60b2b4c3ac103f1a40b6214a471df7eb81d
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x2769c6a18e1185b036297d4e3e7ea5104c36339a
+total expense: 178000.0 LINA
+total income: 0 LINA
+data from 0x37ada49e8db4628c39de1e896ccf413d18ee40a9
+total expense: 4000.0 LINA
+total income: 0 LINA
+data from 0xf6a1696b626082cbd89008b34945e76c80d074c3
+total expense: 200000.0 LINA
+total income: 0 LINA
+data from 0x3f2f47869aa8eacd4120bf4b8569785c3cb5f477
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0xabde756679c9f5f24d7b501e8f8698c64be71c2e
+total expense: 200000.0 LINA
+total income: 0 LINA
+data from 0x91fff731f607926ba8368ea2d7fb77a8087bd321
+total expense: 20000.0 LINA
+total income: 0 LINA
+data from 0xc0ed07953a04eac2a40ac7a60b2e8cbb5b609975
+total expense: 18000.0 LINA
+total income: 0 LINA
+data from 0x91083603df06312000646a304877443b290ad87b
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x5b34f2965eaf4334b9b9145f67602dfacc9286c1
+total expense: 10000.0 LINA
+total income: 0 LINA
+data from 0xc1cc5dc6094d225798d291db1d1b66b669114602
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x2f41afc01324ab9e8a2d949ad1a9cf7c1b3e8b51
+total expense: 2000.0 LINA
+total income: 0 LINA
+data from 0x2f47eb9a597867927f19546399e73b99ef55093c
+total expense: 12000.0 LINA
+total income: 0 LINA
+data from 0x15afd1a71ab27da9f539e25847ea03322cfa0be9
+total expense: 600000.0 LINA
+total income: 0 LINA
+data from 0x8a57c86551c8f4ce7b0150eb698d6d0de7d45250
+total expense: 10000.0 LINA
+total income: 0 LINA
+data from 0xf3840c1d5503f2d2c962e56d00737061d173d7d6
+total expense: 6000.0 LINA
+total income: 0 LINA
+data from 0xfb6497cea6644c56e432017af46f7503894f0d83
+total expense: 600000.0 LINA
+total income: 0 LINA
+data from 0x14fdc15619d3da8a48d0456806dc0b5353643b10
+total expense: 14000.0 LINA
+total income: 2000.0 LINA
+======================================
+data from the above INCOME side
+total expense: 21387169.054734997 LINA
+total income: 17177338.784130897 LINA

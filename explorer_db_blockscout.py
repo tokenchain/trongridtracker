@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-from core.explorer_db import ExcelExplorer
+from core.projects.work_lk_usd import ExcelExplorer
 
 if __name__ == '__main__':
     ee  = ExcelExplorer()
