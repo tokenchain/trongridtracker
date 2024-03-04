@@ -1,4 +1,4 @@
-from core.lib import GraphTron
+from lib.classiccore import GraphTron
 
 if __name__ == '__main__':
     thread_hold = 10

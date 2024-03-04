@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 
-from core.solver.call4bytes import FourBytes, SIGNATURE
+from lib.solver.call4bytes import FourBytes, SIGNATURE
 
 if __name__ == '__main__':
     # Clearing the Screen

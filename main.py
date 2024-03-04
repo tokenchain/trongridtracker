@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-from core.lib import USDTApp, SubLayerAnalysis, Analysis
+from lib.classiccore import USDTApp, SubLayerAnalysis, Analysis
+from lib.projects.casesscan import *
 
 
 def line_one_line(t: str):
@@ -31,7 +32,7 @@ def oklinkimport():
     Analysis().handle_history()
 
 
-if __name__ == '__main__':
+def prompt_what_is():
     scan_on_address = input("please enter the tron wallet address: ")
     USDTApp().getOKLinkFile(scan_on_address)
     oklinkimport()
@@ -39,3 +40,7 @@ if __name__ == '__main__':
     # line_one_line(scan_on_address)
     # fill_reports()
     # local_analysis()
+
+
+if __name__ == '__main__':
+    gamble_case_1_analysis()

@@ -1,0 +1,21 @@
+# build stage
+FROM nikolaik/python-nodejs:python3.11-nodejs21-slim
+WORKDIR /home/chain_rearch_lab
+COPY requirements.txt .
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    vim \
+    bash-completion \
+    htop \
+    git curl --no-install-recommends \
+    graphviz \
+    ca-certificates
+RUN apt-get clean
+RUN pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple certifi
+RUN update-ca-certificates
+RUN pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
+
+COPY . .
+VOLUME /home/chain_rearch_lab
+WORKDIR /home/chain_rearch_lab
+CMD ["python","main_exe.py","--data-dir=/data"]

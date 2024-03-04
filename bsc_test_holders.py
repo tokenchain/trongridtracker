@@ -1,4 +1,4 @@
-from core.etherscan import TokenHolder, BscScan
+from lib.etherscan import TokenHolder, BscScan
 
 
 def nova():

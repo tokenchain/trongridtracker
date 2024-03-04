@@ -1,4 +1,4 @@
-from core.projects.did import ProjectPlan
+from lib.projects.did import ProjectPlan
 
 if __name__ == '__main__':
     pp = ProjectPlan('DID')

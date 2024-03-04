@@ -1,8 +1,6 @@
-from core.projects.work_7spring import ProjectPlan
+from lib.projects.work_7spring import ProjectPlan
 
 if __name__ == '__main__':
-
-
     planner = ProjectPlan('sevenSpringsFinance')
     planner.setParams(
         target_address="0xD3C39cba6d3Afb3d304703F085Fc7A8249576C18",

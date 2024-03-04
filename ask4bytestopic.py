@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import os
-from core.solver.call4bytes import FourBytes, EVENTS
+from lib.solver.call4bytes import FourBytes, EVENTS
 if __name__ == '__main__':
     # Clearing the Screen
     os.system('clear')

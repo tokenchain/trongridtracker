@@ -2,61 +2,89 @@
 # Accepts a version string and prints it incremented by one.
 # Usage: increment_version <version> [<position>] [<leftmost>]
 increment_version() {
-  declare -a part=( ${1//\./ } )
-  declare    new
+  declare -a part=(${1//\./ })
+  declare new
   declare -i carry=1
 
-  for (( CNTR=${#part[@]}-1; CNTR>=0; CNTR-=1 )); do
+  for ((CNTR = ${#part[@]} - 1; CNTR >= 0; CNTR -= 1)); do
     len=${#part[CNTR]}
-    new=$((part[CNTR]+carry))
+    new=$((part[CNTR] + carry))
     [ ${#new} -gt $len ] && carry=1 || carry=0
     [ $CNTR -gt 0 ] && part[CNTR]=${new: -len} || part[CNTR]=${new}
   done
   new="${part[*]}"
-   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo -e "${new// /.}"
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "${new// /.}"
-    elif [[ "$OSTYPE" == "cygwin" ]]; then
-        echo "not correct system - cygwin detected"
-        exit
-    fi
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    echo -e "${new// /.}"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "${new// /.}"
+  elif [[ "$OSTYPE" == "cygwin" ]]; then
+    echo "not correct system - cygwin detected"
+    exit
+  fi
 
 }
-
 
 mod_package_json() {
-    param_chan=$(echo "$1 = \"$2\"")
-    echo "$param_chan"
-    cat $NODEPFILE | jq "$param_chan" $NODEPFILE | sponge $NODEPFILE
+  param_chan=$(echo "$1 = \"$2\"")
+  echo "$param_chan"
+  cat $NODEPFILE | jq "$param_chan" $NODEPFILE | sponge $NODEPFILE
 }
 
-auto_install_nvm(){
-    if (( AUTO_INSTALL==1 )); then
-        $CMD_FINAL
-    else
-        echo "no install"
-    fi
+auto_install_nvm() {
+  if ((AUTO_INSTALL == 1)); then
+    $CMD_FINAL
+  else
+    echo "no install"
+  fi
 }
-gitpush(){
-    local gitcheck=$(git diff --shortstat)
-    git add .
-    echo "Please enter your commit message:"
-    read name
-    git commit -m "♻️ $gitcheck $name"
-    git push
-    echo "♻️ You can open ${GIT_LOC} or git clone ${GIT_LOC}.git to copy to the local"
+gitpush() {
+  local gitcheck=$(git diff --shortstat)
+  git add .
+  echo "Please enter your commit message:"
+  read name
+  git commit -m "♻️ $gitcheck $name"
+  git push
+  echo "♻️ You can open ${GIT_LOC} or git clone ${GIT_LOC}.git to copy to the local"
 }
-removeRemote(){
+removeRemote() {
   git rm --cached enp
   git commit -m "remove enp file system"
 }
-enp/bin/python -m pip freeze | grep -vE '^(pyobjc-|pyobjc).*==' | awk '{print $1}' > requirements.txt
-echo "\nbeautifulsoup4==4.12.2" >> requirements.txt
-GIT_LOC=https://github.com/tokenchain/trongridtracker.git
-VERSION=$(cat version)
-increment_version $VERSION > version
-VERSION=$(cat version)
-echo "==== versioning done ====="
-gitpush
-echo "==== git push done ====="
+
+pub_ver() {
+  VERSION=$(cat version)
+  increment_version $VERSION >version
+  VERSION=$(cat version)
+}
+
+exe_tracker_git() {
+  enp/bin/python -m pip freeze | grep -vE '^(pyobjc-|pyobjc).*==' | awk '{print $1}' >requirements.txt
+  echo "\nbeautifulsoup4==4.12.2" >>requirements.txt
+  GIT_LOC=https://github.com/tokenchain/trongridtracker.git
+  pub_ver
+  echo "==== versioning done ====="
+  gitpush
+  echo "==== git push done ====="
+}
+
+check_need_cmd() {
+  if ! command -v obsmain &>/dev/null; then
+    echo "obsmain is not be found"
+    exit
+  fi
+}
+
+onCtrlC() {
+  echo 'Ctrl+C is captured'
+}
+
+service_run() {
+  if ! command -v python3 &>/dev/null; then
+    echo "python3 could not be found"
+    exit
+  fi
+  trap 'onCtrlC' INT
+  nohup python3 main.py >block.log &
+}
+
+exe_tracker_git
